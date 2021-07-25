@@ -18,44 +18,44 @@
   
   
   <title>MySQL中的连接查询 | Castile</title>
-  <meta name="description" content="MySQL中的连接查询一共有7大连接查询，如下图所示  通过举例来理解吧。 建库建表12345678910111213141516171819202122232425262728293031323334353637383940USE test;CREATE TABLE &#96;t_dept&#96; ( &#96;id&#96; INT(11) NOT NULL AUTO_INCREMENT, &#96;deptName&#96; VARCH">
+  <meta name="description" content="MySQL中的连接查询一共有7大连接查询，如下图所示   通过举例来理解吧。 建库建表12345678910111213141516171819202122232425262728293031323334353637383940USE test;CREATE TABLE &#96;t_dept&#96; ( &#96;id&#96; INT(11) NOT NULL AUTO_INCREMENT, &#96;deptName&#96; VARC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL中的连接查询">
 <meta property="og:url" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/index.html">
 <meta property="og:site_name" content="Castile">
-<meta property="og:description" content="MySQL中的连接查询一共有7大连接查询，如下图所示  通过举例来理解吧。 建库建表12345678910111213141516171819202122232425262728293031323334353637383940USE test;CREATE TABLE &#96;t_dept&#96; ( &#96;id&#96; INT(11) NOT NULL AUTO_INCREMENT, &#96;deptName&#96; VARCH">
+<meta property="og:description" content="MySQL中的连接查询一共有7大连接查询，如下图所示   通过举例来理解吧。 建库建表12345678910111213141516171819202122232425262728293031323334353637383940USE test;CREATE TABLE &#96;t_dept&#96; ( &#96;id&#96; INT(11) NOT NULL AUTO_INCREMENT, &#96;deptName&#96; VARC">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5Cjoin.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849668178.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849721471.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849830472.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849891913.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850195107.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850168894.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850318926.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850437923.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850639381.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850944340.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851034531.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851127637.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851300616.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851389654.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595853279736.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595853554044.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595853864813.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854050609.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854203724.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854316872.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854670926.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854986754.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595855195365.png">
-<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595856000455.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/join.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849668178.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849721471.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849830472.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849891913.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850195107.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850168894.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850318926.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850437923.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850639381.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850944340.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851034531.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851127637.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851300616.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851389654.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595853279736.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595853554044.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595853864813.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854050609.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854203724.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854316872.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854670926.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854986754.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595855195365.png">
+<meta property="og:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595856000455.png">
 <meta property="article:published_time" content="2020-07-27T13:44:36.000Z">
-<meta property="article:modified_time" content="2020-07-27T13:44:36.517Z">
+<meta property="article:modified_time" content="2021-07-25T09:03:38.257Z">
 <meta property="article:author" content="朱宏梁">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5Cjoin.png">
+<meta name="twitter:image" content="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/join.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://castile.github.io/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/index.html">
   
@@ -241,7 +241,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">39</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E9%AB%98%E5%B9%B6%E5%8F%91/">Java高并发</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MyBatis/">MyBatis</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">39</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E9%AB%98%E5%B9%B6%E5%8F%91/">Java高并发</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MyBatis/">MyBatis</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -251,7 +251,7 @@
   <div class="widget">
     <h3 class="widget-title">标签</h3>
     <div class="widget-body">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pytorch/" rel="tag">Pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UVOS/" rel="tag">UVOS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VOS/" rel="tag">VOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bfs/" rel="tag">bfs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/davis/" rel="tag">davis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/" rel="tag">dfs</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dp/" rel="tag">dp</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/errors/" rel="tag">errors</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/" rel="tag">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/" rel="tag">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/" rel="tag">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/latex/" rel="tag">latex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/" rel="tag">matlab</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/papers/" rel="tag">papers</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/" rel="tag">plugin</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synchronized/" rel="tag">synchronized</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topK/" rel="tag">topK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile/" rel="tag">volatile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E6%93%8D%E4%BD%9C/" rel="tag">位操作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E9%94%AE%E5%AD%97/" rel="tag">关键字</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%88%E5%B8%8C/" rel="tag">哈希</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" rel="tag">快速排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag">插件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/" rel="tag">数据集</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%A1%E6%8B%9B/" rel="tag">校招</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AC%94%E8%AF%95/" rel="tag">笔试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%85%BE%E8%AE%AF/" rel="tag">腾讯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%94%81/" rel="tag">锁</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pytorch/" rel="tag">Pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UVOS/" rel="tag">UVOS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VOS/" rel="tag">VOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bfs/" rel="tag">bfs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/davis/" rel="tag">davis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/" rel="tag">dfs</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dp/" rel="tag">dp</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/errors/" rel="tag">errors</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/" rel="tag">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/" rel="tag">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/" rel="tag">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/latex/" rel="tag">latex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/" rel="tag">matlab</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/papers/" rel="tag">papers</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/" rel="tag">plugin</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synchronized/" rel="tag">synchronized</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topK/" rel="tag">topK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile/" rel="tag">volatile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E6%93%8D%E4%BD%9C/" rel="tag">位操作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E9%94%AE%E5%AD%97/" rel="tag">关键字</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%88%E5%B8%8C/" rel="tag">哈希</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" rel="tag">快速排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag">插件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/" rel="tag">数据集</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%A1%E6%8B%9B/" rel="tag">校招</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AC%94%E8%AF%95/" rel="tag">笔试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%85%BE%E8%AE%AF/" rel="tag">腾讯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%94%81/" rel="tag">锁</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -270,7 +270,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
@@ -282,21 +282,6 @@
     <div class="widget-body">
       <ul class="recent-post-list list-unstyled no-thumbnail">
         
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/Java/">Java</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/07/25/test/" class="title">test</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-07-25T08:28:49.000Z" itemprop="datePublished">2021-07-25</time>
-              </p>
-            </div>
-          </li>
-          
           <li>
             
             <div class="item-inner">
@@ -357,6 +342,21 @@
             </div>
           </li>
           
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java%E9%AB%98%E5%B9%B6%E5%8F%91/">Java高并发</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/07/23/theadlocal/" class="title">初探ThreadLocal</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-07-22T17:04:30.260Z" itemprop="datePublished">2021-07-23</time>
+              </p>
+            </div>
+          </li>
+          
       </ul>
     </div>
   </div>
@@ -368,6 +368,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E4%B8%AD%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">MySQL中的连接查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BB%BA%E5%BA%93%E5%BB%BA%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">建库建表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%83%E5%A4%A7%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.</span> <span class="toc-text">七大连接查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AB%E5%85%B1%E5%90%8C"><span class="toc-number">3.1.</span> <span class="toc-text">AB共同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A%E7%9A%84%E5%85%A8%E9%9B%86"><span class="toc-number">3.2.</span> <span class="toc-text">A的全集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B%E7%9A%84%E5%85%A8%E9%9B%86"><span class="toc-number">3.3.</span> <span class="toc-text">B的全集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A%E7%9A%84%E7%8B%AC%E6%9C%89"><span class="toc-number">3.4.</span> <span class="toc-text">A的独有</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B%E7%9A%84%E7%8B%AC%E6%9C%89"><span class="toc-number">3.5.</span> <span class="toc-text">B的独有</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB%E5%85%A8%E6%9C%89"><span class="toc-number">3.6.</span> <span class="toc-text">AB全有</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A%E7%9A%84%E7%8B%AC%E6%9C%89-B%E7%9A%84%E7%8B%AC%E6%9C%89"><span class="toc-number">3.7.</span> <span class="toc-text">A的独有+B的独有</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6"><span class="toc-number">4.</span> <span class="toc-text">进阶</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-mysql连接查询" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -425,62 +434,80 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <h1 id="MySQL中的连接查询"><a href="#MySQL中的连接查询" class="headerlink" title="MySQL中的连接查询"></a>MySQL中的连接查询</h1><p>一共有7大连接查询，如下图所示</p>
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5Cjoin.png" alt="1595849491367"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/join.png" class width="1595849491367">
+
 <p>通过举例来理解吧。</p>
 <h1 id="建库建表"><a href="#建库建表" class="headerlink" title="建库建表"></a>建库建表</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">USE test;</span><br><span class="line">CREATE TABLE `t_dept` (</span><br><span class="line"> `id` INT(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line"> `deptName` VARCHAR(30) DEFAULT NULL,</span><br><span class="line"> `address` VARCHAR(40) DEFAULT NULL,</span><br><span class="line"> PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;</span><br><span class="line"> </span><br><span class="line">CREATE TABLE `t_emp` (</span><br><span class="line"> `id` INT(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line"> `name` VARCHAR(20) DEFAULT NULL,</span><br><span class="line">  `age` INT(3) DEFAULT NULL,</span><br><span class="line"> `deptId` INT(11) DEFAULT NULL,</span><br><span class="line">empno INT  NOT NULL,</span><br><span class="line"> PRIMARY KEY (`id`),</span><br><span class="line"> KEY `idx_dept_id` (`deptId`)</span><br><span class="line"> #CONSTRAINT `fk_dept_id` FOREIGN KEY (`deptId`) REFERENCES `t_dept` (`id`)</span><br><span class="line">) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">INSERT INTO t_dept(deptName,address) VALUES(&#x27;华山&#x27;,&#x27;华山&#x27;);</span><br><span class="line">INSERT INTO t_dept(deptName,address) VALUES(&#x27;丐帮&#x27;,&#x27;洛阳&#x27;);</span><br><span class="line">INSERT INTO t_dept(deptName,address) VALUES(&#x27;峨眉&#x27;,&#x27;峨眉山&#x27;);</span><br><span class="line">INSERT INTO t_dept(deptName,address) VALUES(&#x27;武当&#x27;,&#x27;武当山&#x27;);</span><br><span class="line">INSERT INTO t_dept(deptName,address) VALUES(&#x27;明教&#x27;,&#x27;光明顶&#x27;);</span><br><span class="line"> INSERT INTO t_dept(deptName,address) VALUES(&#x27;少林&#x27;,&#x27;少林寺&#x27;);</span><br><span class="line"> </span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;风清扬&#x27;,90,1,100001);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;岳不群&#x27;,50,1,100002);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;令狐冲&#x27;,24,1,100003);</span><br><span class="line"> </span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;洪七公&#x27;,70,2,100004);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;乔峰&#x27;,35,2,100005);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;灭绝师太&#x27;,70,3,100006);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;周芷若&#x27;,20,3,100007);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;张三丰&#x27;,100,4,100008);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;张无忌&#x27;,25,5,100009);</span><br><span class="line">INSERT INTO t_emp(NAME,age,deptId,empno) VALUES(&#x27;韦小宝&#x27;,18,NULL,100010);</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_emp;  # 10</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849668178.png" alt="1595849668178"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849668178.png" class width="1595849668178">
+
 <p>一共有10条记录。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_dept; # 6</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849721471.png" alt="1595849721471"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849721471.png" class width="1595849721471">
+
 <p>部门有6条记录，表示六大门派</p>
 <h1 id="七大连接查询"><a href="#七大连接查询" class="headerlink" title="七大连接查询"></a>七大连接查询</h1><h2 id="AB共同"><a href="#AB共同" class="headerlink" title="AB共同"></a>AB共同</h2><p>即查询两张表中共同的部分，即上图的交集。</p>
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849830472.png" alt="1595849830472"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849830472.png" class width="1595849830472">
+
 <p>查询所有 有门派的人员信息：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_emp a INNER JOIN t_dept b ON a.`deptId` = b.`id`;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595849891913.png" alt="1595849891913"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595849891913.png" class width="1595849891913">
+
 <p>从结果中发现，门派表中的“少林”与员工表的“韦小宝”不在查询结果中。只查询了两表的交集部分。<strong>因为韦小宝不属于任何门派，而员工表中没有少林派的人员。</strong></p>
 <hr>
-<h2 id="A的全集"><a href="#A的全集" class="headerlink" title="A的全集"></a>A的全集</h2><p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850195107.png" alt="1595850195107"></p>
+<h2 id="A的全集"><a href="#A的全集" class="headerlink" title="A的全集"></a>A的全集</h2><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850195107.png" class width="1595850195107">
+
+
+
 <p>列出<strong>所有用户</strong>，并显示其机构信息：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_emp a LEFT JOIN t_dept b ON a.`deptId` = b.`id`;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850168894.png" alt="1595850168894"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850168894.png" class width="1595850168894">
+
 <p>要求列出所有的用户，应该使用<strong>左连接</strong>， 员工表为主表，将主表 中的数据全部查询出来，从表是部门表，与员工表不对应的部分查询为NULL。</p>
 <hr>
-<h2 id="B的全集"><a href="#B的全集" class="headerlink" title="B的全集"></a>B的全集</h2><p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850318926.png" alt="1595850318926"></p>
+<h2 id="B的全集"><a href="#B的全集" class="headerlink" title="B的全集"></a>B的全集</h2><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850318926.png" class width="1595850318926">
+
 <p>列出<strong>所有门派</strong> ：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_emp a RIGHT JOIN t_dept b ON a.`deptId` = b.`id`;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850437923.png" alt="1595850437923"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850437923.png" class width="1595850437923">
+
 <p>上述结果中，将所有的门派查询出来了，右边的表为主表，而左边的员工表中，有匹配的就查询，无匹配的就填充NULL。</p>
 <h2 id="A的独有"><a href="#A的独有" class="headerlink" title="A的独有"></a>A的独有</h2><p>所谓A的独占就是说查询出来的结果中只在A表中出现的记录，B表中无匹配。</p>
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850639381.png" alt="1595850639381"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850639381.png" class width="1595850639381">
+
 <p>相当于A的全集中将中间的“抠掉”,  也就是说将两表的公共部分去掉。其标准查询模板是：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select &lt;select list&gt; from A left join B on a.key = b.key where b.key IS NULL;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595850944340.png" alt="1595850944340"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595850944340.png" class width="1595850944340">
+
 <p>如： 查询所有不入门派的人员, 我们需要做的就是将上面红框部分的去掉，获取剩下的蓝色框部分。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_emp a LEFT JOIN t_dept b ON a.`deptId` = b.`id` WHERE b.`id` IS NULL;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851034531.png" alt="1595851034531"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851034531.png" class width="1595851034531">
+
 <hr>
-<h2 id="B的独有"><a href="#B的独有" class="headerlink" title="B的独有"></a>B的独有</h2><p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851127637.png" alt="1595851127637"></p>
+<h2 id="B的独有"><a href="#B的独有" class="headerlink" title="B的独有"></a>B的独有</h2><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851127637.png" class width="1595851127637">
+
 <p>同上的分析。相当于B的全集中将中间的“抠掉”,  也就是说将两表的公共部分去掉，或者说我要去的B的独有部分，A 就没啥事情了，将B全集中结果去掉A的那部分就是B的独有了。其标准查询模板是：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select &lt;select list&gt; from A right join B on a.key = b.key where a.key IS NULL;</span><br></pre></td></tr></table></figure>
 
 <p>查询所有没人入的门派：</p>
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851300616.png" alt="1595851300616"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851300616.png" class width="1595851300616">
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_emp a RIGHT JOIN t_dept b ON a.`deptId` = b.`id` WHERE a.`deptId` IS NULL;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595851389654.png" alt="1595851389654"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595851389654.png" class width="1595851389654">
+
 <p>查出来的是少林派，的确是少林派没有人加入。</p>
 <hr>
-<h2 id="AB全有"><a href="#AB全有" class="headerlink" title="AB全有"></a>AB全有</h2><p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595853279736.png" alt="1595853279736"></p>
+<h2 id="AB全有"><a href="#AB全有" class="headerlink" title="AB全有"></a>AB全有</h2><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595853279736.png" class width="1595853279736">
+
 <p>其标准查询模板是：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &lt;select list &gt; from A FULL OUTER JOIN B ON A.key = B.key;</span><br></pre></td></tr></table></figure>
 
@@ -488,43 +515,48 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_emp a FULL OUTER JOIN t_dept b ON a.`deptId` = b.`id`;</span><br></pre></td></tr></table></figure>
 
 <p>保存如下：</p>
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595853554044.png" alt="1595853554044"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595853554044.png" class width="1595853554044">
+
 <p>这是因为MYSQL不支持<code>FULL JOIN</code>。</p>
 <p>可以使用UNION， 可以去重</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT	* FROM t_emp a LEFT JOIN t_dept  b ON a.`deptId` = b.`id`</span><br><span class="line">UNION</span><br><span class="line">SELECT * FROM t_emp a RIGHT JOIN t_dept  b ON a.`deptId` = b.`id`;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595853864813.png" alt="1595853864813"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595853864813.png" class width="1595853864813">
+
 <p>分析一下, 一目了然，就是三个的并集：</p>
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854050609.png" alt="1595854050609"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854050609.png" class width="1595854050609">
+
 <hr>
-<h2 id="A的独有-B的独有"><a href="#A的独有-B的独有" class="headerlink" title="A的独有+B的独有"></a>A的独有+B的独有</h2><p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854203724.png" alt="1595854203724"></p>
+<h2 id="A的独有-B的独有"><a href="#A的独有-B的独有" class="headerlink" title="A的独有+B的独有"></a>A的独有+B的独有</h2><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854203724.png" class width="1595854203724">
+
 <p>列出所有没入派的人员和没人入的门派</p>
 <p>没入派的就是韦小宝，没人入的门派是少林派</p>
 <p>和上面一样，就是A的独有并上B的独有，也可以使用UNION关键字</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 7. 列出所有没入派的人员和没人入的门派</span><br><span class="line">SELECT * FROM t_emp a LEFT JOIN t_dept b ON a.`deptId` = b.`id` WHERE b.`id` IS NULL </span><br><span class="line">UNION</span><br><span class="line">SELECT * FROM t_emp a RIGHT JOIN t_dept b ON a.`deptId` = b.`id` WHERE a.`deptId` IS NULL;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854316872.png" alt="1595854316872"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854316872.png" class width="1595854316872">
+
+
+
 <h1 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h1><p>如果在上面的部门表上加上对应的门派掌门字段</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE t_dept ADD CEO INT(11);</span><br><span class="line"></span><br><span class="line">UPDATE t_dept SET CEO=2 WHERE id=1;</span><br><span class="line">UPDATE t_dept SET CEO=4 WHERE id=2;</span><br><span class="line">UPDATE t_dept SET CEO=6 WHERE id=3;</span><br><span class="line">UPDATE t_dept SET CEO=8 WHERE id=4;</span><br><span class="line">UPDATE t_dept SET CEO=9 WHERE id=5;</span><br><span class="line">SELECT * FROM t_dept;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854670926.png" alt="1595854670926"></p>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854670926.png" class width="1595854670926">
+
 <ol>
 <li><p>求各个门派对应的掌门人名称:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t_dept b LEFT JOIN t_emp a ON  a.`id`= b.`CEO`;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595854986754.png" alt="1595854986754"></p>
-</li>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595854986754.png" class width="1595854986754"></li>
 <li><p>求所有当上掌门人的平均年龄:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT AVG(a.`age`) FROM t_emp a INNER JOIN t_dept b ON a.`id` = b.`CEO`;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595855195365.png" alt="1595855195365"></p>
-</li>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595855195365.png" class width="1595855195365"></li>
 <li><p>求所有人物对应的掌门名称:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT c.`name` NAME, ab.name ceoName FROM t_emp c LEFT JOIN </span><br><span class="line">(SELECT b.`id`, a.`name` FROM t_dept b LEFT JOIN t_emp a ON  a.`id`= b.`CEO`) ab</span><br><span class="line">ON c.`deptId`= ab.id;</span><br></pre></td></tr></table></figure>
 
 <p>这里涉及到了三表连接。在第一题中我们已经查询到了每一个门派的掌门姓名，然后我们需要查询每一个人对应的掌门姓名，可以利用第一题查询 到的结果作为另一张表，然后使用员工表去左连接查询。</p>
-<p><img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%5C1595856000455.png" alt="1595856000455"></p>
-</li>
+<img src="/2020/07/27/mysql%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2/1595856000455.png" class width="1595856000455"></li>
 </ol>
 
       
@@ -590,6 +622,15 @@
       <a href="/2020/07/26/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/" title="最短路径算法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   

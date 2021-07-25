@@ -18,64 +18,64 @@
   
   
   <title>从网络到IO多路复用 | Castile</title>
-  <meta name="description" content="基于linux操作系统tcpdump strace man nc curl nginx 开篇-基础知识准备tcp、ip协议层 。 TCP： 面向连接的可靠的传输协议， 需要进行3次握手建立连接。  四次挥手断开连接  软件分层结构，每个层有做自己的事情，解耦合。 在linux上执行命令访问www.baidu.com 1exec 6&lt;&gt; &#x2F;dev&#x2F;tcp&#x2F;www.baidu.com&#x2F;80">
+  <meta name="description" content="基于linux操作系统tcpdump strace man nc curl nginx 开篇-基础知识准备tcp、ip协议层 。 TCP： 面向连接的可靠的传输协议， 需要进行3次握手建立连接。   四次挥手断开连接   软件分层结构，每个层有做自己的事情，解耦合。 在linux上执行命令访问www.baidu.com 1exec 6&lt;&gt; &#x2F;dev&#x2F;tcp&#x2F;www.baidu.com&#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从网络到IO多路复用">
 <meta property="og:url" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/index.html">
 <meta property="og:site_name" content="Castile">
-<meta property="og:description" content="基于linux操作系统tcpdump strace man nc curl nginx 开篇-基础知识准备tcp、ip协议层 。 TCP： 面向连接的可靠的传输协议， 需要进行3次握手建立连接。  四次挥手断开连接  软件分层结构，每个层有做自己的事情，解耦合。 在linux上执行命令访问www.baidu.com 1exec 6&lt;&gt; &#x2F;dev&#x2F;tcp&#x2F;www.baidu.com&#x2F;80">
+<meta property="og:description" content="基于linux操作系统tcpdump strace man nc curl nginx 开篇-基础知识准备tcp、ip协议层 。 TCP： 面向连接的可靠的传输协议， 需要进行3次握手建立连接。   四次挥手断开连接   软件分层结构，每个层有做自己的事情，解耦合。 在linux上执行命令访问www.baidu.com 1exec 6&lt;&gt; &#x2F;dev&#x2F;tcp&#x2F;www.baidu.com&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596339781519.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340107335.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596339781519.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340107335.png">
 <meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596338215863.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340272940.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340312930.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340347063.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340485781.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340567812.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340618884.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596342921077.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340272940.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340312930.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340347063.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340485781.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340567812.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340618884.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596342921077.png">
 <meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/Users/ZHLAS/AppData/Roaming/Typora/typora-user-images/1596342893175.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596343177824.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596343270786.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596343753967.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348250812.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348180958.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348474672.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348629679.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348842591.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596350428037.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596350713176.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596351333541.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596352369785.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596352460918.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596343177824.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596343270786.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596343753967.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348250812.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348180958.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348474672.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348629679.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348842591.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596350428037.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596350713176.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596351333541.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596352369785.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596352460918.png">
 <meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/Users/ZHLAS/AppData/Roaming/Typora/typora-user-images/1596352589369.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596352739519.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596353886051.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596354546614.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596355176202.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596355593306.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374161025.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374461886.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374545591.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374748379.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374641173.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596375190301.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596375290597.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596375526366.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596376139195.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596376468601.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596376962580.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596352739519.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596353886051.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596354546614.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596355176202.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596355593306.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374161025.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374461886.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374545591.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374748379.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374641173.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596375190301.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596375290597.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596375526366.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596376139195.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596376468601.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596376962580.png">
 <meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/Users/ZHLAS/AppData/Roaming/Typora/typora-user-images/1596376939382.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596378280120.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596378843696.png">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596381266279.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596378280120.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596378843696.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596381266279.png">
 <meta property="article:published_time" content="2021-07-22T17:04:30.235Z">
-<meta property="article:modified_time" content="2020-09-09T07:08:09.811Z">
+<meta property="article:modified_time" content="2021-07-25T09:08:43.486Z">
 <meta property="article:author" content="朱宏梁">
 <meta property="article:tag" content="io">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596339781519.png">
+<meta name="twitter:image" content="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/1596339781519.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://castile.github.io/2021/07/23/io%E5%A4%8D%E7%94%A8/index.html">
   
@@ -261,7 +261,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">39</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E9%AB%98%E5%B9%B6%E5%8F%91/">Java高并发</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MyBatis/">MyBatis</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">39</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E9%AB%98%E5%B9%B6%E5%8F%91/">Java高并发</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MyBatis/">MyBatis</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -271,7 +271,7 @@
   <div class="widget">
     <h3 class="widget-title">标签</h3>
     <div class="widget-body">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pytorch/" rel="tag">Pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UVOS/" rel="tag">UVOS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VOS/" rel="tag">VOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bfs/" rel="tag">bfs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/davis/" rel="tag">davis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/" rel="tag">dfs</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dp/" rel="tag">dp</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/errors/" rel="tag">errors</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/" rel="tag">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/" rel="tag">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/" rel="tag">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/latex/" rel="tag">latex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/" rel="tag">matlab</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/papers/" rel="tag">papers</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/" rel="tag">plugin</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synchronized/" rel="tag">synchronized</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topK/" rel="tag">topK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile/" rel="tag">volatile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E6%93%8D%E4%BD%9C/" rel="tag">位操作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E9%94%AE%E5%AD%97/" rel="tag">关键字</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%88%E5%B8%8C/" rel="tag">哈希</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" rel="tag">快速排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag">插件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/" rel="tag">数据集</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%A1%E6%8B%9B/" rel="tag">校招</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AC%94%E8%AF%95/" rel="tag">笔试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%85%BE%E8%AE%AF/" rel="tag">腾讯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%94%81/" rel="tag">锁</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/" rel="tag">Mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pytorch/" rel="tag">Pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UVOS/" rel="tag">UVOS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VOS/" rel="tag">VOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aop/" rel="tag">aop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bfs/" rel="tag">bfs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/davis/" rel="tag">davis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/" rel="tag">dfs</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dp/" rel="tag">dp</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/errors/" rel="tag">errors</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/" rel="tag">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/" rel="tag">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/juc/" rel="tag">juc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/latex/" rel="tag">latex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/" rel="tag">matlab</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/papers/" rel="tag">papers</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/" rel="tag">plugin</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synchronized/" rel="tag">synchronized</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/" rel="tag">tools</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topK/" rel="tag">topK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/volatile/" rel="tag">volatile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%8D%E6%93%8D%E4%BD%9C/" rel="tag">位操作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E9%94%AE%E5%AD%97/" rel="tag">关键字</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%88%E5%B8%8C/" rel="tag">哈希</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" rel="tag">快速排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag">插件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/" rel="tag">数据集</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%A1%E6%8B%9B/" rel="tag">校招</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AC%94%E8%AF%95/" rel="tag">笔试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%85%BE%E8%AE%AF/" rel="tag">腾讯</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%94%81/" rel="tag">锁</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -290,7 +290,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
@@ -302,21 +302,6 @@
     <div class="widget-body">
       <ul class="recent-post-list list-unstyled no-thumbnail">
         
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/Java/">Java</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/07/25/test/" class="title">test</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-07-25T08:28:49.000Z" itemprop="datePublished">2021-07-25</time>
-              </p>
-            </div>
-          </li>
-          
           <li>
             
             <div class="item-inner">
@@ -377,6 +362,21 @@
             </div>
           </li>
           
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java%E9%AB%98%E5%B9%B6%E5%8F%91/">Java高并发</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/07/23/theadlocal/" class="title">初探ThreadLocal</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-07-22T17:04:30.260Z" itemprop="datePublished">2021-07-23</time>
+              </p>
+            </div>
+          </li>
+          
       </ul>
     </div>
   </div>
@@ -388,6 +388,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8Elinux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">基于linux操作系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E7%AF%87-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">开篇-基础知识准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E6%8A%93%E5%8C%85"><span class="toc-number">3.</span> <span class="toc-text">使用工具抓包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NetCat"><span class="toc-number">4.</span> <span class="toc-text">NetCat</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">4.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-number">4.2.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3"><span class="toc-number">4.3.</span> <span class="toc-text">监听端口</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#strace"><span class="toc-number">5.</span> <span class="toc-text">strace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8system-call"><span class="toc-number">6.</span> <span class="toc-text">系统调用system call</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#BIO"><span class="toc-number">6.1.</span> <span class="toc-text">BIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NIO"><span class="toc-number">6.2.</span> <span class="toc-text">NIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select"><span class="toc-number">6.3.</span> <span class="toc-text">select</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#epoll"><span class="toc-number">6.4.</span> <span class="toc-text">epoll</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%EF%BC%9A%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B%E5%9B%BE%E7%A4%BA"><span class="toc-number">7.</span> <span class="toc-text">附：发展历程图示</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">8.</span> <span class="toc-text">参考资料</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-io复用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -452,9 +461,11 @@
 <p>nginx</p>
 <h1 id="开篇-基础知识准备"><a href="#开篇-基础知识准备" class="headerlink" title="开篇-基础知识准备"></a>开篇-基础知识准备</h1><p>tcp、ip协议层 。</p>
 <p>TCP： 面向连接的可靠的传输协议， 需要进行3次握手建立连接。</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596339781519.png" alt="1596339781519"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596339781519.png" class width="1596339781519">
+
 <p>四次挥手断开连接</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340107335.png" alt="1596340107335"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340107335.png" class width="1596340107335">
+
 <p>软件分层结构，每个层有做自己的事情，解耦合。</p>
 <p>在linux上执行命令访问<a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exec</span> 6&lt;&gt; /dev/tcp/www.baidu.com/80</span><br></pre></td></tr></table></figure>
@@ -479,18 +490,25 @@
 
 <h1 id="使用工具抓包"><a href="#使用工具抓包" class="headerlink" title="使用工具抓包"></a>使用工具抓包</h1><p>使用tcpdump工具</p>
 <p>安装：yum install tcpdump</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340272940.png" alt="1596340272940"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340272940.png" class width="1596340272940">
+
 <p>查看网卡 ifconfig</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340312930.png" alt="1596340312930"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340312930.png" class width="1596340312930">
+
 <p>看一下tcpdump如何使用： tcpdump –help</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340347063.png" alt="1596340347063"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340347063.png" class width="1596340347063">
+
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -nn -i ens33 port 80  <span class="comment"># 监听80端口的时间 在网卡 ens33 上</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340485781.png" alt="1596340485781"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340485781.png" class width="1596340485781">
+
 <p>目前还没有，是一个阻塞状态</p>
 <p>然后我们去访问一下百度 curl ， 重开一个ssh</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340567812.png" alt="1596340567812"></p>
-<p>在刚刚的侦听界面上：<br><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596340618884.png" alt="1596340618884"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340567812.png" class width="1596340567812">
+
+<p>在刚刚的侦听界面上：</p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596340618884.png" class width="1596340618884">
+
 <p>分析一下, 先看建立连接，也就是前三行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">11:55:43.617175 IP 192.168.145.130.51914 &gt; 104.193.88.77.80: Flags [S], seq 3681486933, win 29200, options [mss 1460,sackOK,TS val 41257007 ecr 0,nop,wscale 7], length 0</span><br><span class="line"></span><br><span class="line">表示本机给百度发送了一个 seq ，后面的数字表示序列号。 S 表示 sync</span><br><span class="line"></span><br><span class="line">11:55:43.845875 IP 104.193.88.77.80 &gt; 192.168.145.130.51914: Flags [S.], seq 1297381438, ack 3681486934, win 64240, options [mss 1460], length 0</span><br><span class="line"></span><br><span class="line">接着百度给本机发送 了一个 sync+ ack的包。</span><br><span class="line"></span><br><span class="line">11:55:43.845926 IP 192.168.145.130.51914 &gt; 104.193.88.77.80: Flags [.], ack 1, win 29200, length 0</span><br><span class="line"></span><br><span class="line">然后本地给百度回复了一个 ack 确认</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -509,20 +527,24 @@
 <h1 id="NetCat"><a href="#NetCat" class="headerlink" title="NetCat"></a>NetCat</h1><p> nc是netcat工具的命令，是一个很好用的网络工具。比如，可以用来端口扫描，文件传输等网络功能。 在 网络工具中有“瑞士军刀”美誉的NetCat， 在我们用了N年了至今仍是爱不释手。 </p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nc</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596342921077.png" alt="1596342921077"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596342921077.png" class width="1596342921077">
+
 <h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/Users\ZHLAS\AppData\Roaming\Typora\typora-user-images\1596342893175.png" alt="1596342893175"></p>
 <h2 id="监听端口"><a href="#监听端口" class="headerlink" title="监听端口"></a>监听端口</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -l 8080  <span class="comment"># 开启服务端</span></span><br><span class="line">nc localhost 8080 <span class="comment"># 开启客户端</span></span><br></pre></td></tr></table></figure>
 
 <p>他们之间就建立了连接，可以相互发送数据</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596343177824.png" alt="1596343177824"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596343177824.png" class width="1596343177824">
+
 <p>查看他们的进程</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep nc</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596343270786.png" alt="1596343270786"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596343270786.png" class width="1596343270786">
+
 <p>然后我们用上面的提到的，在 /proc/进程id/fd 目录下面下有进程描述符：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> proc/102514/fd</span><br><span class="line">ll</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596343753967.png" alt="1596343753967"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596343753967.png" class width="1596343753967">
+
 <h1 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h1><blockquote>
 <p>yum install strace</p>
 </blockquote>
@@ -531,77 +553,96 @@
 
 <p>然后在xxoo目录下有一个文件 out-4781 , 后面的id表示nc的进程id</p>
 <p>打开这个文件：</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348250812.png" alt="1596348250812"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348250812.png" class width="1596348250812">
+
 <p>查看select的作用： man 2  select</p>
 <p>select是一个多路复用器，会阻塞</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348180958.png" alt="1596348180958"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348180958.png" class width="1596348180958">
+
 <p>使用 tail命令去动态查看文件的变化</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f out.4781</span><br></pre></td></tr></table></figure>
 
 <p>打开一个客户端 nv localhost 8080</p>
 <p>发送一些信息</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348474672.png" alt="1596348474672"></p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348629679.png" alt="1596348629679"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348474672.png" class width="1596348474672">
+
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348629679.png" class width="1596348629679">
+
 <p>write(1, “zhuhongliang\n”, 13)          = 13 表示在 文件描述符1 写入 。1代表标准写</p>
 <p>看一下recvfrom 的功能：从一个socket接受数据data，返回数据的字节数</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596348842591.png" alt="1596348842591"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596348842591.png" class width="1596348842591">
+
+
+
+
+
 <h1 id="系统调用system-call"><a href="#系统调用system-call" class="headerlink" title="系统调用system call"></a>系统调用system call</h1><p>read、write、 socket、 bind、listen、accept</p>
 <p>上述系统方法的实现是在linux kernel里面的实现的。kernel只会对应用程序暴露上述方法的调用，所以程序会对系统内核发起系统调用。</p>
 <h2 id="BIO"><a href="#BIO" class="headerlink" title="BIO"></a>BIO</h2><p>如果程想使用内核完成网络通信的话，这时候会发生哪些事情呢？</p>
 <p>看看下面的过程</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596350428037.png" alt="1596350428037"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596350428037.png" class width="1596350428037">
+
 <p>首先服务端系统调用kernel，socket获取服务端的文件描述符 5，然后使用bind将文件描述符与端口8080进行绑定，之后监听看有没有连接。</p>
 <p>这时候，一个客户端也进行系统调用，经过三次握手之后连接了服务端，服务端系统调用accept， 建立连接 。客户端的文件描述符加入是fd 4 。 然后调用read 读操作，传入客户端的文件描述符4 。但是这个客户端没有发送数据，所以这个read现在被阻塞住了。</p>
 <p>此时又有一个客户端来连接</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596350713176.png" alt="1596350713176"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596350713176.png" class width="1596350713176">
+
 <p>建立完连接后，这时候不会给他分配文件描述符，因为程序已经被阻塞住了，只能运行到accept这个阶段，如果客户端有超时响应的话，会报超时连接错误。</p>
 <p>这是整个IO  发展历程中的第一个时期：BIO，即阻塞IO。</p>
 <p>那么，我们怎么解决这个问题呢？ 可以开辟一个线程。</p>
 <p>一旦出现了一个连接，就分配一个文件描述符，然后开辟一个线程。</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596351333541.png" alt="1596351333541"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596351333541.png" class width="1596351333541">
+
 <p>如果有线程来<code>read</code>了，就启动线程，否则阻塞。上述就是多线程模型。</p>
 <p>这样已经解决服务端无法处理多个客户端连接请求的问题了，但这种多线程模型有什么缺点或者说弊端呢？</p>
 <p>思考一下如果有100000个客户端，那么是不是要与100000个线程的开辟？？？</p>
 <p>这就开销太大了吧。</p>
 <p>我们首先看一下java程序在linux 系统中是如何调用的</p>
 <p>写一个简单的java程序</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596352369785.png" alt="1596352369785"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596352369785.png" class width="1596352369785">
+
 <p>使用是strace 追踪系统调用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -o xxoo java Hello</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596352460918.png" alt="1596352460918"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596352460918.png" class width="1596352460918">
+
 <p>可以看到，这样一个简单的java程序并不是只开辟了一个线程。打开113151</p>
 <p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/Users\ZHLAS\AppData\Roaming\Typora\typora-user-images\1596352589369.png" alt="1596352589369"></p>
 <p>发现调用了113152线程， 并且使用的系统调用<code>clone</code></p>
 <p>那 我们的主线程是哪个，主线程应该是打印Hello world的那个线程吧</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&quot;Hello world&quot;</span> ./*</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596352739519.png" alt="1596352739519"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596352739519.png" class width="1596352739519">
+
 <p>看到了write系统调用了吗。这是在113152线程中。</p>
 <p>我们可以得出一个结论，线程的创建是通过调用内核的clone系统调用来实现的，主线程都需要clone，然后如果有成千上万个线程的话，就要进行成千上万次系统调用，这个开销很非常大的。因为调用内核不是直接就调用的，需要发生软中断，而且CPU也要切换状态。</p>
 <h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><p>在BIO时期这一切万恶之源都是由于系统调用会有阻塞的情况发生，如果一个客户端没有发送数据，就会阻塞。虽然多线程模型可以处理多个客户端的情况，但是由于开销大，系统调用此时多，比较慢。</p>
 <p>那么能不能只创建一个线程就可以处理多个客户端呢？</p>
 <p>我们看看socket： <code>man 2 socket</code></p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596353886051.png" alt="1596353886051"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596353886051.png" class width="1596353886051">
+
 <blockquote>
 <p>SOCK_NONBLOCK :   Set the O_NONBLOCK file status flag on the new open file description.  Using this flag saves extra calls to fcntl(2) to achieve the same result</p>
 </blockquote>
 <p>可以使用非阻塞，fcntl来指定非阻塞的文件描述符</p>
 <p>==所以，内核需要发生变化==</p>
 <p>下面的模型非阻塞的NIO （NON- Block IO）</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596354546614.png" alt="1596354546614"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596354546614.png" class width="1596354546614">
+
 <p>在客户端只需要写一个死循环，然后有一个客户端的文件描述符解accept，如果没有数据传输，就报错，然后程序可以继续执行。这样的模型也有弊端。</p>
 <p>试想一下，如果有10000个客户端，一次循环就进行10000次系统调用，那么如果只有第10000个客户端有数据传输，那这样的开销会很大。</p>
 <p>有没有什么解决方法呢？ 如果能把多次系统调用变成一次系统调用那就好啦！！！</p>
 <p>怎么做？==内核又需要变化了==</p>
 <h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p>上面我们提到了select。看看<code>select</code> ： man 2 select </p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596355176202.png" alt="1596355176202"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596355176202.png" class width="1596355176202">
+
 <blockquote>
 <p>select() and pselect() allow a program to monitor multiple file descriptors, waiting until one or more of the file descriptors become “ready” for some class of I/O operation (e.g., input possible).  A file descriptor  is considered ready if it is possible to perform the corresponding I/O operation (e.g., read(2)) without blocking.</p>
 <p>select()和pselect()允许程序监视多个文件描述符，直到其中一个或多个文件描述符为某些类型的I/O操作(例如，输入)“准备好”。如果文件描述符可以不阻塞地执行相应的I/O操作(如read(2))，则认为它已经准备好了。</p>
 </blockquote>
 <p>下面是使用了select或者poll的模型</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596355593306.png" alt="1596355593306"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596355593306.png" class width="1596355593306">
+
 <p>将各个客户端的文件描述符给select，然后select会去主动遍历每一个文件描述符，哪个有数据输出就返回哪个文件描述符，然后通过系统调用read去读取。这样的话就只用以一次系统调用就把需要read的文件描述符选择出来了，比上面的需要非常多的系统调用模型更加优秀。另外，select是系统调用，会主动遍历每一个文件操作符，时间复杂度为O(N)。</p>
 <p>这还没有完，这种模型还没有很优美，虽然减少了系统调用，但是select里面的轮询还是O(N)的，这该怎么改进呢？</p>
 <p>epoll终于来了！！！</p>
@@ -610,26 +651,34 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.9.9.tar.gz  </span><br><span class="line">tar -zxvf  nginx-1.9.9.tar.gz</span><br><span class="line"><span class="built_in">cd</span> nginx目录</span><br><span class="line">./configure</span><br><span class="line"> </span><br><span class="line">make</span><br><span class="line"> </span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
 
 <p>运行nginx在 usr/local/nginx/sbin 目录下</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374161025.png" alt="1596374161025"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374161025.png" class width="1596374161025">
+
 <p>我们来看看nginx有多少个线程，不出意外的话，应该是两个，一个是master，一个是worker。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -o out ./nginx</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374461886.png" alt="1596374461886"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374461886.png" class width="1596374461886">
+
 <p>我们看看对应的out下有多少文件</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374545591.png" alt="1596374545591"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374545591.png" class width="1596374545591">
+
 <p>可以看到有3635、3636、3637三个进程，不应该是两个吗？？？</p>
 <p>我们来看看3635这个进程：</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374748379.png" alt="1596374748379"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374748379.png" class width="1596374748379">
+
 <p>这个进程只是启动进程，最后是退出了的，它clone了3636进程， 然后3636进程clone了3637进程，如下图。</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596374641173.png" alt="1596374641173"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596374641173.png" class width="1596374641173">
+
 <p>所以他们是父子关系。  3635–&gt; 3636 –&gt; 3637。 因为3636是master进程，可以看到他其实没有做什么事情， 就是将3637 worker进程clone出来了。</p>
 <p>其实一开始文件描述符是在3635进程，也就是启动线程就去确定了，通过clone将文件描述符带给3636进程， 3636又带去3637进程</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596375190301.png" alt="1596375190301"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596375190301.png" class width="1596375190301">
+
 <p>再看看3637进程</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596375290597.png" alt="1596375290597"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596375290597.png" class width="1596375290597">
+
 <p>文件描述符6 放进了8 里面，8 是上面的<code>epoll_create</code>创建出来的。</p>
 <p>那么epoll_create 是干嘛的，运行命令 man 2 epoll_create 查看系统调用</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596375526366.png" alt="1596375526366"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596375526366.png" class width="1596375526366">
+
 <blockquote>
 <p>  epoll_create() returns a file descriptor referring to the new epoll instance.  This file descriptor is used for all the subsequent calls to the epoll interface.  When no longer required, the file descriptor returned by epoll_create() should be closed by using close(2).  When all file descriptors referring to an epoll instance have been closed, the kernel  destroys  the  instance  and releases the associated resources for reuse.</p>
 <p>epoll_create()返回引用新epoll实例的文件描述符。<strong>此文件描述符用于随后对epoll接口的所有调用。</strong>当不再需要时，应该使用close(2)关闭epoll_create()返回的文件描述符。当引用epoll实例的所有文件描述符都被关闭时，内核会销毁该实例并释放相关的资源以供重用。</p>
@@ -646,14 +695,17 @@
 <p>超时参数指定epoll_wait()将阻塞的最小毫秒数。(这个时间间隔将被舍入到系统时钟粒度，内核调度延迟意味着阻塞时间间隔可能会超出一小部分。)将超时指定为-1将导致epoll_wait()无限期阻塞，而将超时指定为0将导致epoll_wait()立即返回，即使没有可用的事件。</p>
 <p>成功时，epoll_wait()返回为请求的I/O准备好的文件描述符的数量，如果在请求的超时毫秒期间没有文件描述符准备好，则返回0。当发生错误时，epoll_wait()返回-1,errno被适当地设置。</p>
 </blockquote>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596376139195.png" alt="1596376139195"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596376139195.png" class width="1596376139195">
+
 <p>我们来模拟一下访问，目前3637进程是阻塞的，因为没有客户端来连接。</p>
 <p>使用tail命令去查看动态的文件变化</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596376468601.png" alt="1596376468601"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596376468601.png" class width="1596376468601">
+
 <p>使用curl来模拟访问</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl localhost 80</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596376962580.png" alt="1596376962580"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596376962580.png" class width="1596376962580">
+
 <p>out文件的变化</p>
 <p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/Users\ZHLAS\AppData\Roaming\Typora\typora-user-images\1596376939382.png" alt="1596376939382"></p>
 <p>主要看看这几句</p>
@@ -663,14 +715,19 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc localhost 80  <span class="comment"># 客户端1</span></span><br><span class="line">nc localhost 80 <span class="comment"># 客户端2</span></span><br></pre></td></tr></table></figure>
 
 <p>这是out文件的变化，可以看到有两个文件描述符加入8 中</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596378280120.png" alt="1596378280120"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596378280120.png" class width="1596378280120">
+
 <p>所以，所有的连接只需要通过epoll_ctl（8， ）放入8一次，未来就连续调用epoll_wait来监听那个文件描述符有数据到达， 对于文件描述符6来说，等待的是accept事件，对于3、10 等其他的客户端的文件描述符是等待read，一旦监听到了，就将这个文件描述符放入一个集合中。</p>
-<p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596378843696.png" alt="1596378843696"></p>
+<img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596378843696.png" class width="1596378843696">
+
 <p>这样的模型不像select会一次将10000个文件描述符拷贝给内核，内核开辟了一个空间，来了一个客户端就通过epoll_ctl将文件描述符放入到指定的区域里面，只要连接不断开，那么可以通过epoll_wait获取到客户端的所有事件。</p>
 <p>内核是被动的，中断的事件会让8 里面的文件描述符进入到右边的返回区，然后主程序就是一个epol_wait死循环，一直判断返回区里面有没有事件。</p>
 <p>零拷贝： sendFile系统调用</p>
 <p>直接内存</p>
-<h1 id="附：发展历程图示"><a href="#附：发展历程图示" class="headerlink" title="附：发展历程图示"></a>附：发展历程图示</h1><p><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/io%E5%A4%8D%E7%94%A8%5C1596381266279.png" alt="1596381266279"></p>
+<h1 id="附：发展历程图示"><a href="#附：发展历程图示" class="headerlink" title="附：发展历程图示"></a>附：发展历程图示</h1><img src="/2021/07/23/io%E5%A4%8D%E7%94%A8/1596381266279.png" class width="1596381266279">
+
+
+
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://cyc2018.github.io/CS-Notes/#/notes/Socket">https://cyc2018.github.io/CS-Notes/#/notes/Socket</a></li>
 </ol>
@@ -735,9 +792,18 @@
     
     
     <li class="next">
-      <a href="/2021/07/22/github%E6%96%87%E7%AB%A0/" title="&#39;github文章&#39;"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2020/10/05/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" title="区间调度算法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   
