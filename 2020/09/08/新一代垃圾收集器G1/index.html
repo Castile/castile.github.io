@@ -18,39 +18,39 @@
   
   
   <title>新一代垃圾收集器G1 | Castile</title>
-  <meta name="description" content="Java GC介绍 GC是垃圾搜集的意思，是jvm的一个重要部分。 怎么算是垃圾 废弃的对象 任何时候都不再使用的对象  怎么判断是否是垃圾 引用计数法：会有循环引用的问题 GC roots搜索： 可达性分析算法（JVM使用的）  垃圾收集器 以上是 HotSpot 虚拟机中的垃圾收集器，连线表示垃圾收集器可以配合使用。 单线程与多线程：单线程指的是垃圾收集器只使用一个线程，而多线程使用多个线程；">
+  <meta name="description" content="Java GC介绍  GC是垃圾搜集的意思，是jvm的一个重要部分。 怎么算是垃圾 废弃的对象 任何时候都不再使用的对象  怎么判断是否是垃圾 引用计数法：会有循环引用的问题 GC roots搜索： 可达性分析算法（JVM使用的）  垃圾收集器  以上是 HotSpot 虚拟机中的垃圾收集器，连线表示垃圾收集器可以配合使用。 单线程与多线程：单线程指的是垃圾收集器只使用一个线程，而多线程使用多个线">
 <meta property="og:type" content="article">
 <meta property="og:title" content="新一代垃圾收集器G1">
 <meta property="og:url" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/index.html">
 <meta property="og:site_name" content="Castile">
-<meta property="og:description" content="Java GC介绍 GC是垃圾搜集的意思，是jvm的一个重要部分。 怎么算是垃圾 废弃的对象 任何时候都不再使用的对象  怎么判断是否是垃圾 引用计数法：会有循环引用的问题 GC roots搜索： 可达性分析算法（JVM使用的）  垃圾收集器 以上是 HotSpot 虚拟机中的垃圾收集器，连线表示垃圾收集器可以配合使用。 单线程与多线程：单线程指的是垃圾收集器只使用一个线程，而多线程使用多个线程；">
+<meta property="og:description" content="Java GC介绍  GC是垃圾搜集的意思，是jvm的一个重要部分。 怎么算是垃圾 废弃的对象 任何时候都不再使用的对象  怎么判断是否是垃圾 引用计数法：会有循环引用的问题 GC roots搜索： 可达性分析算法（JVM使用的）  垃圾收集器  以上是 HotSpot 虚拟机中的垃圾收集器，连线表示垃圾收集器可以配合使用。 单线程与多线程：单线程指的是垃圾收集器只使用一个线程，而多线程使用多个线">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557072461.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557392320.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557498842.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557769927.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1592205518320.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599558333667.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C81538cd5-1bcf-4e31-86e5-e198df1e013b.jpg">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C278fe431-af88-4a95-a895-9c3b80117de3.jpg">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599559259292.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599560640963.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599565035554.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599565282616.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599567972614.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568228923.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568334166.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568350313.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568365781.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599569115217.png">
-<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599569161274.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557072461.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557392320.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557498842.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557769927.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1592205518320.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599558333667.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/81538cd5-1bcf-4e31-86e5-e198df1e013b.jpg">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/278fe431-af88-4a95-a895-9c3b80117de3.jpg">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599559259292.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599560640963.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599565035554.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599565282616.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599567972614.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568228923.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568334166.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568350313.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568365781.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599569115217.png">
+<meta property="og:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599569161274.png">
 <meta property="article:published_time" content="2020-09-08T12:56:05.000Z">
-<meta property="article:modified_time" content="2020-09-08T12:56:05.020Z">
+<meta property="article:modified_time" content="2021-07-26T14:31:07.978Z">
 <meta property="article:author" content="朱宏梁">
 <meta property="article:tag" content="gc">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557072461.png">
+<meta name="twitter:image" content="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557072461.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://castile.github.io/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/index.html">
   
@@ -363,6 +363,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-GC%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Java GC介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E7%AE%97%E6%98%AF%E5%9E%83%E5%9C%BE"><span class="toc-number">1.1.</span> <span class="toc-text">怎么算是垃圾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AF%E5%9E%83%E5%9C%BE"><span class="toc-number">1.2.</span> <span class="toc-text">怎么判断是否是垃圾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">垃圾收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">垃圾收集算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC%E5%88%86%E4%BB%A3%E5%81%87%E8%AE%BE"><span class="toc-number">1.5.</span> <span class="toc-text">GC分代假设</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%A4%E5%85%B8%E6%97%B6%E6%9C%9F%E7%9A%84GC%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">古典时期的GC算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial"><span class="toc-number">2.1.</span> <span class="toc-text">Serial</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallel"><span class="toc-number">2.2.</span> <span class="toc-text">Parallel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ParNew"><span class="toc-number">2.2.1.</span> <span class="toc-text">ParNew</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Scavenge-%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">2.2.2.</span> <span class="toc-text">Parallel Scavenge 收集器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Old-%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">2.2.3.</span> <span class="toc-text">Parallel Old 收集器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E5%8F%A4%E6%97%B6%E4%BB%A3%E7%9A%84GC%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">中古时代的GC算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS%EF%BC%9A-Concurrent-Mark-Sweep"><span class="toc-number">3.1.</span> <span class="toc-text">CMS： Concurrent Mark Sweep</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%96%B0%E7%94%9F%E4%BB%A3%E4%B8%8D%E4%BD%BF%E7%94%A8-CMS"><span class="toc-number">3.2.</span> <span class="toc-text">为什么新生代不使用 CMS</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%B0%E4%BB%A3%E7%9A%84%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1"><span class="toc-number">4.</span> <span class="toc-text">现代的垃圾收集器G1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89G1"><span class="toc-number">4.1.</span> <span class="toc-text">为什么会有G1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E4%BB%A3-%E8%B7%A8Region%E5%BC%95%E7%94%A8"><span class="toc-number">4.2.</span> <span class="toc-text">跨代&#x2F;跨Region引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Write-barrier"><span class="toc-number">4.3.</span> <span class="toc-text">Write barrier</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0Remembered-Set"><span class="toc-number">4.4.</span> <span class="toc-text">更新Remembered Set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fully-young-GC"><span class="toc-number">4.5.</span> <span class="toc-text">Fully young GC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Old-GC"><span class="toc-number">4.6.</span> <span class="toc-text">Old GC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E2%BE%8A%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95"><span class="toc-number">4.7.</span> <span class="toc-text">三⾊标记算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mixed-GC"><span class="toc-number">4.8.</span> <span class="toc-text">Mixed GC</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AA%E6%9D%A5%EF%BC%9AZGC-Shenandoah"><span class="toc-number">5.</span> <span class="toc-text">未来：ZGC&#x2F;Shenandoah</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-新一代垃圾收集器G1" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -419,7 +428,8 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="Java-GC介绍"><a href="#Java-GC介绍" class="headerlink" title="Java GC介绍"></a>Java GC介绍</h1><p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557072461.png" alt="1599557072461"></p>
+        <h1 id="Java-GC介绍"><a href="#Java-GC介绍" class="headerlink" title="Java GC介绍"></a>Java GC介绍</h1><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557072461.png" class width="1599557072461">
+
 <p>GC是垃圾搜集的意思，是jvm的一个重要部分。</p>
 <h2 id="怎么算是垃圾"><a href="#怎么算是垃圾" class="headerlink" title="怎么算是垃圾"></a>怎么算是垃圾</h2><ol>
 <li>废弃的对象</li>
@@ -429,7 +439,8 @@
 <li>引用计数法：会有循环引用的问题</li>
 <li>GC roots搜索： 可达性分析算法（JVM使用的）</li>
 </ol>
-<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557392320.png" alt="1599557392320"></p>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557392320.png" class width="1599557392320">
+
 <p>以上是 HotSpot 虚拟机中的垃圾收集器，连线表示垃圾收集器可以配合使用。</p>
 <p>单线程与多线程：单线程指的是垃圾收集器只使用一个线程，而多线程使用多个线程；</p>
 <p>串行与并行：串行指的是垃圾收集器与用户程序交替执行，这意味着在执行垃圾收集的时候需要停顿用户程序；并行指的是垃圾收集器和用户程序同时执行。除了 CMS 和 G1 之外，其它垃圾收集器都是以串行的方式执行。</p>
@@ -439,13 +450,13 @@
 <li><p>mark-sweep-compact： 内存整理，解决了内存碎片问题</p>
 </li>
 <li><p>mark-copy：存活的对象复制到另外一块内存中。内存消耗大。</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557498842.png" alt="1599557498842"></p>
-</li>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557498842.png" class width="1599557498842"></li>
 </ol>
 <p>怎么优化？</p>
 <h2 id="GC分代假设"><a href="#GC分代假设" class="headerlink" title="GC分代假设"></a>GC分代假设</h2><p>堆分为新生代和老年代，一般创建的对象是在新生代创建，新生代创建的对象大多数都是朝生夕死的，GC也主要发生在新生代，在新生代会会回收大量的垃圾。经过几次新生代的GC后还存活下来的对象会被送入到老年代中。这个是有一个阈值来设置的。</p>
 <p>在新生代和老年代分别使用不同的垃圾收集算法。</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599557769927.png" alt="1599557769927"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599557769927.png" class width="1599557769927">
+
 <hr>
 <h1 id="古典时期的GC算法"><a href="#古典时期的GC算法" class="headerlink" title="古典时期的GC算法"></a>古典时期的GC算法</h1><ol>
 <li> Serial  </li>
@@ -459,15 +470,19 @@
 <p>⽼年代Parallel Old </p>
 </li>
 </ol>
-<h2 id="Serial"><a href="#Serial" class="headerlink" title="Serial"></a>Serial</h2><p> <img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1592205518320.png" alt="1592205518320"></p>
+<h2 id="Serial"><a href="#Serial" class="headerlink" title="Serial"></a>Serial</h2> <img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1592205518320.png" class width="1592205518320">
+
 <p>Serial 收集器为单线程环境设计，并只使用一个线程进行垃圾回收。 在回收时，<strong>会暂停用户线程</strong>，并不适用于并发环境。</p>
 <p>Serial 收集器采用复制算法</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599558333667.png" alt="1599558333667"></p>
-<h2 id="Parallel"><a href="#Parallel" class="headerlink" title="Parallel"></a>Parallel</h2><h3 id="ParNew"><a href="#ParNew" class="headerlink" title="ParNew"></a>ParNew</h3><p> <img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C81538cd5-1bcf-4e31-86e5-e198df1e013b.jpg" alt="img"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599558333667.png" class width="1599558333667">
+
+<h2 id="Parallel"><a href="#Parallel" class="headerlink" title="Parallel"></a>Parallel</h2><h3 id="ParNew"><a href="#ParNew" class="headerlink" title="ParNew"></a>ParNew</h3> <img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/81538cd5-1bcf-4e31-86e5-e198df1e013b.jpg" class title="img">
+
 <p> 它是 Serial 收集器的多线程版本。</p>
 <p>它是 Server 场景下默认的新生代收集器，除了性能原因外，主要是因为除了 Serial 收集器，只有它能与 CMS 收集器配合使用。</p>
 <h3 id="Parallel-Scavenge-收集器"><a href="#Parallel-Scavenge-收集器" class="headerlink" title="Parallel Scavenge 收集器"></a>Parallel Scavenge 收集器</h3><p> 其它收集器目标是尽可能缩短垃圾收集时用户线程的停顿时间，而它的目标是达到一个可控制的吞吐量，因此它被称为“<strong>吞吐量优先</strong>”收集器。这里的吞吐量指 CPU 用于运行用户程序的时间占总时间的比值。 </p>
-<h3 id="Parallel-Old-收集器"><a href="#Parallel-Old-收集器" class="headerlink" title="Parallel Old 收集器"></a>Parallel Old 收集器</h3><p> <img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C278fe431-af88-4a95-a895-9c3b80117de3.jpg" alt="img"> </p>
+<h3 id="Parallel-Old-收集器"><a href="#Parallel-Old-收集器" class="headerlink" title="Parallel Old 收集器"></a>Parallel Old 收集器</h3> <img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/278fe431-af88-4a95-a895-9c3b80117de3.jpg" class title="img"> 
+
 <p>是 Parallel Scavenge 收集器的老年代版本。</p>
 <p>在注重吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge 加 Parallel Old 收集器。</p>
 <h1 id="中古时代的GC算法"><a href="#中古时代的GC算法" class="headerlink" title="中古时代的GC算法"></a>中古时代的GC算法</h1><h2 id="CMS：-Concurrent-Mark-Sweep"><a href="#CMS：-Concurrent-Mark-Sweep" class="headerlink" title="CMS： Concurrent Mark Sweep"></a>CMS： Concurrent Mark Sweep</h2><blockquote>
@@ -487,7 +502,8 @@
 <li>无法处理浮动垃圾，可能出现 <code>Concurrent Mode Failure</code>。浮动垃圾是指并发清除阶段由于用户线程继续运行而产生的垃圾，这部分垃圾只能到下一次 GC 时才能进行回收。由于浮动垃圾的存在，因此需要预留出一部分内存，意味着 CMS 收集不能像其它收集器那样等待老年代快满的时候再回收。如果预留的内存不够存放浮动垃圾，就会出现 Concurrent Mode Failure，这时虚拟机将临时启用 Serial Old 来替代 CMS。</li>
 <li>标记 - 清除算法导致的空间碎片，往往出现老年代空间剩余，但无法找到足够大连续空间来分配当前对象，不得不提前触发一次 Full GC。</li>
 </ul>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599559259292.png" alt="1599559259292"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599559259292.png" class width="1599559259292">
+
 <p>以前的垃圾收集算法想Serial是串行的，垃圾收集的时候必须暂停用户线程，后来有了Parallel的垃圾收集器，目的是降低用户线程等待的时间，所以引入了多线程的垃圾收集器，垃圾收集是并行的多个线程处理。但是感觉还是比较慢，所以有了CMS，搞一个可以让用户线程和垃圾收集线程齐头并进的收集器，用户线程可以和垃圾收集线程并发执行。</p>
 <p>CMS有以下特点：</p>
 <ol>
@@ -514,7 +530,8 @@
 <p>G1（<code>Garbage-First</code>），它是一款面向<strong>服务端应用</strong>的垃圾收集器，在多 CPU 和大内存的场景下有很好的性能。<code>HotSpot</code> 开发团队赋予它的使命是未来可以替换掉 CMS 收集器。</p>
 <p>堆被分为新生代和老年代，其它收集器进行收集的范围都是整个新生代或者老年代，而 G1 可以直接对新生代和老年代一起回收。</p>
 <p>-XXG1HeapRegionSize=N  2048 by fefault</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599560640963.png" alt="1599560640963"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599560640963.png" class width="1599560640963">
+
 <p> G1 把堆划分成多个大小相等的独立区域（<code>Region</code>），新生代和老年代不再物理隔离。 <strong>G1垃圾收集器利用分而治之的思想将堆进行分区，划分为一个个的区域。</strong>每次收集的时候，只收集其中几个区域，以此来控制垃圾回收产生的STW</p>
 <p><strong>G1和其他GC算法最大的区别是弱化分代概念，引入分区思想！！！</strong></p>
 <h2 id="为什么会有G1"><a href="#为什么会有G1" class="headerlink" title="为什么会有G1"></a>为什么会有G1</h2><p>因为并发、并行和CMS垃圾收集器都有2个共同的问题：</p>
@@ -523,11 +540,13 @@
 <li>年轻代和老年代是独立的连续内存块，所以要先决定年轻代和年老代放在虚拟地址空间的位置</li>
 </ol>
 <h2 id="跨代-跨Region引用"><a href="#跨代-跨Region引用" class="headerlink" title="跨代/跨Region引用"></a>跨代/跨Region引用</h2><p>老年代对象可能持有年轻代的引⽤（跨代引⽤），不同的Region间互相引⽤，怎么处理这样的现象呢？</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599565035554.png" alt="1599565035554"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599565035554.png" class width="1599565035554">
+
 <p>G1引入了两种数据结构，一个叫做Remembered Set(RS) 和 Card Table。</p>
 <p> Card Table ：表中的每个entry覆盖512Byte的内存空间 ，当对应的内存空间发⽣改变时，标记为dirty。也就是说，当我们写代码的时候，通过一个引用赋值操作，将某个对象指向其引用的时候，将这个对象所在的card置为dirty</p>
 <p>比如一个Region有1M，那么每512个字节就有一个Card， 那么这一个Region就有2000个Card。</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599565282616.png" alt="1599565282616"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599565282616.png" class width="1599565282616">
+
 <p> RememberedSet： 指向Card Table中的对应entry ，可找到具体内存区域 。引入RS的通就是避免大范围的扫描，避免全堆扫描。</p>
 <p> 每个 Region 都有一个 Remembered Set，用来记录该 Region 对象的引用对象所在的 Region。通过使用 Remembered Set，在做可达性分析的时候就可以避免全堆扫描。 </p>
 <p>如上图，一个区域region1，分成若干个卡片，假如其中某个卡片里面的对象引用了其他region里面的对象的话，这个卡片的位置会被记入region2中的RS中，等Region2的对象回收的时候，根据RS去查询那个对象还在引用我，这样就避免了全堆扫描。</p>
@@ -551,7 +570,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">object.field = &lt;reference&gt; (putfield) </span><br></pre></td></tr></table></figure>
 
 <p> 当更新指针时,标记Card为Dirty , 将Card存⼊Dirty Card Queue, 这个队由 ⽩/绿/⻩/红四个颜⾊。</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599567972614.png" alt="1599567972614"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599567972614.png" class width="1599567972614">
+
 <h2 id="更新Remembered-Set"><a href="#更新Remembered-Set" class="headerlink" title="更新Remembered Set"></a>更新Remembered Set</h2><p>By concurrent refinement threads</p>
 <p>White： 天下太平，⽆事发⽣</p>
 <p>Green zone (-XX:G1ConcRefinementGreenZone=N) ： Refinement线程开始被激活，开始更新RS</p>
@@ -566,7 +586,8 @@
 <li>Object Copy </li>
 <li>Reference Processing </li>
 </ol>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568228923.png" alt="1599568228923"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568228923.png" class width="1599568228923">
+
 <blockquote>
 <p>记录每个阶段的时间，⽤于⾃动调优 </p>
 <p>记录Eden/Survivor的数量和GC时间 </p>
@@ -583,9 +604,12 @@
 <h2 id="三⾊标记算法"><a href="#三⾊标记算法" class="headerlink" title="三⾊标记算法"></a>三⾊标记算法</h2><p>黑色：表示对象以及被垃圾收集器访问过，且这个对象的所有引用都已经扫描过。黑色就代表对象以及扫描过了，他是安全存活的对象。</p>
 <p>灰色：表示对象以及被垃圾收集器访问过，但这个对象上至少存在一个引用还没有被扫描过</p>
 <p>白色： 表示对象还没有被垃圾收集器访问过。显然在可达性分析刚刚开始的阶段，所有的对象都是白色的，若在分析结束的阶段，仍然是白色的对象，表示</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568334166.png" alt="1599568334166"></p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568350313.png" alt="1599568350313"></p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599568365781.png" alt="1599568365781"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568334166.png" class width="1599568334166">
+
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568350313.png" class width="1599568350313">
+
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599568365781.png" class width="1599568365781">
+
 <h2 id="Mixed-GC"><a href="#Mixed-GC" class="headerlink" title="Mixed GC"></a>Mixed GC</h2><p>不⼀定⽴即发⽣ </p>
 <p>选择若⼲个Region进⾏  </p>
 <p>​    默认1/8的Old Region ： -XX:G1MixedGCCountTarget=N </p>
@@ -594,9 +618,11 @@
 <p>根据暂停⽬标，选择垃圾最多的Old Region优先进⾏ </p>
 <p>​    -XX:G1MixedGCLiveThresholdPercent=N (default 85)</p>
 <p>​    -XX:G1HeapWastePercent=N  </p>
-<h1 id="未来：ZGC-Shenandoah"><a href="#未来：ZGC-Shenandoah" class="headerlink" title="未来：ZGC/Shenandoah"></a>未来：ZGC/Shenandoah</h1><p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599569115217.png" alt="1599569115217"></p>
+<h1 id="未来：ZGC-Shenandoah"><a href="#未来：ZGC-Shenandoah" class="headerlink" title="未来：ZGC/Shenandoah"></a>未来：ZGC/Shenandoah</h1><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599569115217.png" class width="1599569115217">
+
 <p>令⼈恐怖的极低延时，使用了染色指针和多重映射</p>
-<p><img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1%5C1599569161274.png" alt="1599569161274"></p>
+<img src="/2020/09/08/%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8G1/1599569161274.png" class width="1599569161274">
+
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1D741177rV?p=2">https://www.bilibili.com/video/BV1D741177rV?p=2</a></li>
 <li><a target="_blank" rel="noopener" href="https://cyc2018.github.io/CS-Notes/#/notes/Java%20%E8%99%9A%E6%8B%9F%E6%9C%BA?id=_7-g1-%e6%94%b6%e9%9b%86%e5%99%a8">https://cyc2018.github.io/CS-Notes/#/notes/Java%20%E8%99%9A%E6%8B%9F%E6%9C%BA?id=_7-g1-%e6%94%b6%e9%9b%86%e5%99%a8</a></li>
@@ -666,6 +692,15 @@
       <a href="/2020/09/07/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E4%B9%8B%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%B3%BB%E5%88%97/" title="算法模板之滑动窗口系列"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   

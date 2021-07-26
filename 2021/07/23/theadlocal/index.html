@@ -25,14 +25,14 @@
 <meta property="og:site_name" content="Castile">
 <meta property="og:description" content="ThreadLocal当调用theadlocal的set的方法的时候，  set方法的源码 12345678public void set(T value) &amp;#123;      Thread t &#x3D; Thread.currentThread(); &#x2F;&#x2F; 获取当前的线程      ThreadLocalMap map &#x3D; getMap(t); &#x2F;&#x2F; 获取当前线程的ThreadLocalMap：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://castile.github.io/2021/07/23/theadlocal/threadlocal%5Cimage-20200826215617400.png">
+<meta property="og:image" content="https://castile.github.io/2021/07/23/theadlocal/image-20200826215617400.png">
 <meta property="article:published_time" content="2021-07-22T17:04:30.260Z">
-<meta property="article:modified_time" content="2020-09-02T02:47:06.128Z">
+<meta property="article:modified_time" content="2021-07-26T14:32:16.950Z">
 <meta property="article:author" content="朱宏梁">
 <meta property="article:tag" content="Thread">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://castile.github.io/2021/07/23/theadlocal/threadlocal%5Cimage-20200826215617400.png">
+<meta name="twitter:image" content="https://castile.github.io/2021/07/23/theadlocal/image-20200826215617400.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://castile.github.io/2021/07/23/theadlocal/index.html">
   
@@ -345,6 +345,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ThreadLocal"><span class="toc-number">1.</span> <span class="toc-text">ThreadLocal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ThreadLocal%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.</span> <span class="toc-text">ThreadLocal的使用场景</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-theadlocal" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -415,7 +424,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalMap</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">            <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">            Object value;</span><br><span class="line"></span><br><span class="line">            Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">                <span class="keyword">super</span>(k);</span><br><span class="line">                value = v;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * The initial capacity -- MUST be a power of two.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INITIAL_CAPACITY = <span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * The table, resized as necessary.</span></span><br><span class="line"><span class="comment">         * table.length MUST always be a power of two.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> Entry[] table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>当我们new了一个threadlocal对象，调用set方法的时候，先拿到 当前的线程的ThreadLocalMap threadlocals， 这是一个Map结构，key为threadlocal对象，value是threadlocal对象里面的值，key是通过一个弱引用指向threadlocal对象的。如下图所示。</p>
-<p><img src="/2021/07/23/theadlocal/threadlocal%5Cimage-20200826215617400.png" alt="image-20200826215617400"></p>
+<p><img src="/2021/07/23/theadlocal/image-20200826215617400.png" alt="image-20200826215617400"></p>
 <p>为什么是弱引用呢？ 假如这是个强引用，当tl的引用置为null的时候，key的引用不为null，还指向了threadlocal对象，所以这时threadlocal将不会被回收，就可能发生内存泄漏。如果是弱引用的话，当JVM虚拟机运行gc的时候，发现threadlocal是一个弱引用，则直接将其回收，这样就可以解决内存泄漏问题。</p>
 <p>还有一个问题，假如，这时候key为null了，要想通过get方法获得value的话是不可能获取到的，这个value对象的值怎么释放呢？所以，这也会产生内存泄漏 的情况，良好的编程习惯是将这一条记录remove掉，这样就防止了value这部分的内存泄漏。</p>
 <p>假如使用的线程池，如果不清理掉旧的记录，当线程复用的时候，会导致数据混乱。所以，线程池的底层源码就是每次开启一个线程的时候都会将当前线程的ThreadLocalMap置为null。</p>
@@ -485,6 +494,15 @@
       <a href="/2021/07/23/%E5%9B%9B%E5%A4%A7%E5%BC%95%E7%94%A8/" title="Java四大引用类型"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   

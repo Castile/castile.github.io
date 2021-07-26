@@ -17,13 +17,13 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>jvm05-GC垃圾回收机制 | Castile</title>
-  <meta name="description" content="GC 的作用区域   垃圾收集主要是针对堆和方法区进行。程序计数器、虚拟机栈和本地方法栈这三个区域属于线程私有的，只存在于线程的生命周期内，线程结束之后就会消失，因此不需要对这三个区域进行垃圾回收。 概述  在次数上频繁收集发生在young区，在次数上较少收集发生在old区。在元空间&#x2F;永久代基本不动。 JVM在进行GC时，并非每次都对上面三个内存区域一起回收的，大部分时候回收的都是指新生代。因此G">
+  <title>GC垃圾回收机制 | Castile</title>
+  <meta name="description" content="垃圾收集主要是针对堆和方法区进行。程序计数器、虚拟机栈和本地方法栈这三个区域属于线程私有的，只存在于线程的生命周期内，线程结束之后就会消失，因此不需要对这三个区域进行垃圾回收。 概述  在次数上频繁收集发生在young区，在次数上较少收集发生在old区。在元空间&#x2F;永久代基本不动。 JVM在进行GC时，并非每次都对上面三个内存区域一起回收的，大部分时候回收的都是指新生代。因此GC按照回收的区域">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jvm05-GC垃圾回收机制">
+<meta property="og:title" content="GC垃圾回收机制">
 <meta property="og:url" content="https://castile.github.io/2020/06/15/jvm05/index.html">
 <meta property="og:site_name" content="Castile">
-<meta property="og:description" content="GC 的作用区域   垃圾收集主要是针对堆和方法区进行。程序计数器、虚拟机栈和本地方法栈这三个区域属于线程私有的，只存在于线程的生命周期内，线程结束之后就会消失，因此不需要对这三个区域进行垃圾回收。 概述  在次数上频繁收集发生在young区，在次数上较少收集发生在old区。在元空间&#x2F;永久代基本不动。 JVM在进行GC时，并非每次都对上面三个内存区域一起回收的，大部分时候回收的都是指新生代。因此G">
+<meta property="og:description" content="垃圾收集主要是针对堆和方法区进行。程序计数器、虚拟机栈和本地方法栈这三个区域属于线程私有的，只存在于线程的生命周期内，线程结束之后就会消失，因此不需要对这三个区域进行垃圾回收。 概述  在次数上频繁收集发生在young区，在次数上较少收集发生在old区。在元空间&#x2F;永久代基本不动。 JVM在进行GC时，并非每次都对上面三个内存区域一起回收的，大部分时候回收的都是指新生代。因此GC按照回收的区域">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://castile.github.io/2020/06/15/jvm05/1592128480578.png">
 <meta property="og:image" content="https://castile.github.io/2020/06/15/jvm05/1592185580737.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://castile.github.io/2020/06/15/jvm05/jvm05%5C1592205613073.png">
 <meta property="og:image" content="https://castile.github.io/2020/06/15/jvm05/jvm05%5C1592205736354.png">
 <meta property="article:published_time" content="2020-06-15T07:36:04.000Z">
-<meta property="article:modified_time" content="2021-07-25T08:04:20.078Z">
+<meta property="article:modified_time" content="2021-07-26T14:44:52.268Z">
 <meta property="article:author" content="朱宏梁">
 <meta property="article:tag" content="jvm">
 <meta property="article:tag" content="gc">
@@ -355,6 +355,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%90%A6%E5%AD%98%E6%B4%BB"><span class="toc-number">2.</span> <span class="toc-text">判断对象是否存活</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">引用计数法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">可达性分析算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E5%9B%9E%E6%94%B6%E3%80%90%E8%A7%81jvm01%E3%80%91"><span class="toc-number">3.</span> <span class="toc-text">方法区的回收【见jvm01】</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E5%A4%A7%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">四大引用类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%BC%95%E7%94%A8"><span class="toc-number">4.1.</span> <span class="toc-text">强引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E5%BC%95%E7%94%A8"><span class="toc-number">4.2.</span> <span class="toc-text">软引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%B1%E5%BC%95%E7%94%A8"><span class="toc-number">4.3.</span> <span class="toc-text">弱引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E5%BC%95%E7%94%A8"><span class="toc-number">4.4.</span> <span class="toc-text">虚引用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">垃圾收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">复制算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">5.1.1.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95-Mark-Sweep"><span class="toc-number">5.2.</span> <span class="toc-text">标记-清除算法(Mark-Sweep)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95-Mark-Compact"><span class="toc-number">5.3.</span> <span class="toc-text">标记-整理算法(Mark-Compact)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86"><span class="toc-number">5.4.</span> <span class="toc-text">分代收集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B4%E8%BD%BB%E4%BB%A3-Young-Gen"><span class="toc-number">5.4.1.</span> <span class="toc-text">年轻代(Young Gen)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%80%81%E5%B9%B4%E4%BB%A3-Tenure-Gen"><span class="toc-number">5.4.2.</span> <span class="toc-text">老年代(Tenure Gen)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5"><span class="toc-number">5.5.</span> <span class="toc-text">内存分配与垃圾回收策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E4%B8%80%E6%AC%A1GC%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">5.6.</span> <span class="toc-text">总结：一次GC的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B4%E9%BE%84%E9%98%88%E5%80%BC"><span class="toc-number">5.7.</span> <span class="toc-text">动态年龄阈值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D%E6%8B%85%E4%BF%9D"><span class="toc-number">5.8.</span> <span class="toc-text">空间分配担保</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Full-GC-%E7%9A%84%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="toc-number">5.8.1.</span> <span class="toc-text">Full GC 的触发条件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%B0%83%E7%94%A8-System-gc"><span class="toc-number">5.8.1.1.</span> <span class="toc-text">1. 调用 System.gc()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%80%81%E5%B9%B4%E4%BB%A3%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3"><span class="toc-number">5.8.1.2.</span> <span class="toc-text">2. 老年代空间不足</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D%E6%8B%85%E4%BF%9D%E5%A4%B1%E8%B4%A5"><span class="toc-number">5.8.1.3.</span> <span class="toc-text">3. 空间分配担保失败</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-JDK-1-7-%E5%8F%8A%E4%BB%A5%E5%89%8D%E7%9A%84%E6%B0%B8%E4%B9%85%E4%BB%A3%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3"><span class="toc-number">5.8.1.4.</span> <span class="toc-text">4.  JDK 1.7 及以前的永久代空间不足</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Concurrent-Mode-Failure"><span class="toc-number">5.8.1.5.</span> <span class="toc-text">5. Concurrent Mode Failure</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">6.</span> <span class="toc-text">垃圾收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">6.1.</span> <span class="toc-text">Serial收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-Old-%E4%B8%B2%E8%A1%8C%E6%94%B6%E9%9B%86%E5%99%A8-%E8%80%81%E5%B9%B4%E4%BB%A3%E7%89%88%E6%9C%AC"><span class="toc-number">6.2.</span> <span class="toc-text">Serial Old 串行收集器(老年代版本)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ParNew-%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">6.3.</span> <span class="toc-text">ParNew 收集器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-jvm05" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -364,7 +373,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      jvm05-GC垃圾回收机制
+      GC垃圾回收机制
     </h1>
   
 
@@ -411,7 +420,7 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="GC-的作用区域"><a href="#GC-的作用区域" class="headerlink" title="GC 的作用区域"></a>GC 的作用区域</h1><img src="/2020/06/15/jvm05/1592128480578.png" class width="1592128480578">
+        <img src="/2020/06/15/jvm05/1592128480578.png" class width="1592128480578">
 
 <p> 垃圾收集主要是针对<strong>堆和方法区</strong>进行。程序计数器、虚拟机栈和本地方法栈这三个区域属于线程私有的，只存在于线程的生命周期内，线程结束之后就会消失，因此不需要对这三个区域进行垃圾回收。</p>
 <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><img src="/2020/06/15/jvm05/1592185580737.png" class width="1592185580737">
@@ -618,7 +627,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://castile.github.io/2020/06/15/jvm05/" title="jvm05-GC垃圾回收机制" target="_blank" rel="external">https://castile.github.io/2020/06/15/jvm05/</a>
+      <a href="https://castile.github.io/2020/06/15/jvm05/" title="GC垃圾回收机制" target="_blank" rel="external">https://castile.github.io/2020/06/15/jvm05/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -673,6 +682,15 @@
       <a href="/2020/06/14/jvm04/" title="jvm04-Heap堆结构和JVM常量池"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   

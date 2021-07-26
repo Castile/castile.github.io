@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://castile.github.io/2020/04/09/deeplabv3-%E7%A9%BA%E6%B4%9E%E5%8D%B7%E7%A7%AF-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/1551772096529951.png">
 <meta property="og:image" content="https://castile.github.io/2020/04/09/deeplabv3-%E7%A9%BA%E6%B4%9E%E5%8D%B7%E7%A7%AF-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/1551772163910291.png">
 <meta property="article:published_time" content="2020-04-09T04:31:36.000Z">
-<meta property="article:modified_time" content="2020-04-09T08:25:05.227Z">
+<meta property="article:modified_time" content="2021-07-26T14:33:07.238Z">
 <meta property="article:author" content="朱宏梁">
 <meta property="article:tag" content="papers">
 <meta name="twitter:card" content="summary">
@@ -362,6 +362,15 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Overview"><span class="toc-number">1.</span> <span class="toc-text">Overview</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.1.</span> <span class="toc-text">大纲</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A9%BA%E6%B4%9E%E5%8D%B7%E7%A7%AF"><span class="toc-number">2.</span> <span class="toc-text">空洞卷积</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BD%91%E6%A0%BC-Multi-Grid-%E7%9A%84%E6%B7%B1%E5%B1%82%E7%A9%BA%E6%B4%9E%E5%8D%B7%E7%A7%AF"><span class="toc-number">3.</span> <span class="toc-text">使用多网格(Multi Grid)的深层空洞卷积</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Atrous%E7%A9%BA%E9%97%B4%E9%87%91%E5%AD%97%E5%A1%94%E6%B1%A0-ASPP"><span class="toc-number">4.</span> <span class="toc-text">Atrous空间金字塔池(ASPP)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Upsampling-Logits"><span class="toc-number">4.1.</span> <span class="toc-text">Upsampling Logits</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E9%87%91%E5%AD%97%E5%A1%94-Image-pyramid"><span class="toc-number">5.</span> <span class="toc-text">图像金字塔(Image pyramid)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E5%99%A8-%E8%A7%A3%E7%A0%81%E5%99%A8-Encoder-decoder"><span class="toc-number">6.</span> <span class="toc-text">编码器-解码器(Encoder-decoder)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8PASCAL-VOC-2012%E4%B8%8A%E8%BF%9B%E8%A1%8C%E5%AE%9E%E9%AA%8C%E9%AA%8C%E8%AF%81"><span class="toc-number">7.</span> <span class="toc-text">在PASCAL VOC 2012上进行实验验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Output-Stride"><span class="toc-number">7.0.1.</span> <span class="toc-text">Output Stride</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ResNet-101"><span class="toc-number">7.0.2.</span> <span class="toc-text">ResNet-101</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Multi-Grid"><span class="toc-number">7.0.3.</span> <span class="toc-text">Multi-Grid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Inference-Strategy"><span class="toc-number">7.0.4.</span> <span class="toc-text">Inference Strategy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ASPP"><span class="toc-number">7.0.5.</span> <span class="toc-text">ASPP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Crop-Size-Upsampling-Logits-Batch-Norm-Batch-Size-Train-amp-Test-Output-Stride"><span class="toc-number">7.0.6.</span> <span class="toc-text">Crop Size, Upsampling Logits, Batch Norm, Batch Size, Train &amp; Test Output Stride</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%87%E7%94%A8%E6%89%80%E6%9C%89%E6%8A%80%E5%B7%A7"><span class="toc-number">7.0.7.</span> <span class="toc-text">采用所有技巧</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Comparison-with-State-of-the-art-Approaches"><span class="toc-number">8.</span> <span class="toc-text">Comparison with State-of-the-art Approaches</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PASCAL-VOC-2012-Test-Set"><span class="toc-number">8.1.</span> <span class="toc-text">PASCAL VOC 2012 Test Set</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8Cityscape%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8A%E8%A1%A8%E7%8E%B0%E6%9C%80%E4%BD%B3%E7%9A%84%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94"><span class="toc-number">9.</span> <span class="toc-text">在Cityscape数据集上表现最佳的方法对比</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Different-Settings"><span class="toc-number">9.1.</span> <span class="toc-text">Different Settings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cityscape-%E6%B5%8B%E8%AF%95%E9%9B%86"><span class="toc-number">9.2.</span> <span class="toc-text">Cityscape 测试集</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">10.</span> <span class="toc-text">结论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">11.</span> <span class="toc-text">参考</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
   <article id="post-deeplabv3-空洞卷积-语义分割" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -649,6 +658,15 @@
       <a href="/2020/04/09/deeplabv1%E5%92%8Cdeeplabv2/" title="deeplabv1和deeplabv2"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   

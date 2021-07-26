@@ -25,20 +25,20 @@
 <meta property="og:site_name" content="Castile">
 <meta property="og:description" content="Java内存模型在讲解synchronized和volatie之前，我们首先需要了解Java内存模型(JMM) 《Java虚拟机规范》中曾试图定义一种“Java内存模型”（Java Memory Model，JMM）来屏蔽各种硬件和操作系统的内存访问差异，以实现让Java程序在各种平台下都能达到一致的内存访问效果。 主内存和工作内存Java内存模型的主要目的是定义程序中各种变量的访问规则，即关注在">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5Csynchronized%E5%92%8Cvolatile.png">
-<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592529422405.png">
-<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592534021635.png">
-<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592534100497.png">
-<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592534150646.png">
+<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile.png">
+<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/1592529422405.png">
+<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/1592534021635.png">
+<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/1592534100497.png">
+<meta property="og:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/1592534150646.png">
 <meta property="article:published_time" content="2020-06-19T04:23:00.000Z">
-<meta property="article:modified_time" content="2020-06-19T04:25:11.815Z">
+<meta property="article:modified_time" content="2021-07-26T14:25:16.633Z">
 <meta property="article:author" content="朱宏梁">
 <meta property="article:tag" content="juc">
 <meta property="article:tag" content="synchronized">
 <meta property="article:tag" content="volatile">
 <meta property="article:tag" content="并发">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5Csynchronized%E5%92%8Cvolatile.png">
+<meta name="twitter:image" content="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://castile.github.io/2020/06/19/synchronized%E5%92%8Cvolatile/index.html">
   
@@ -411,10 +411,14 @@
 <p>《Java虚拟机规范》中曾试图定义一种“Java内存模型”（Java Memory Model，JMM）来屏蔽各种硬件和操作系统的内存访问差异，以实现让Java程序在各种平台下都能达到<strong>一致的内存访问</strong>效果。</p>
 <h2 id="主内存和工作内存"><a href="#主内存和工作内存" class="headerlink" title="主内存和工作内存"></a>主内存和工作内存</h2><p>Java内存模型的主要目的是定义程序中各种变量的访问规则，即关注在虚拟机中把变量值存储到内存和从内存中取出变量值这样的底层细节。</p>
 <p>每条线程还有自己的工作内存（<code>Working Memory</code>），线程的工作内存中保存了被该线程使用的变量的主内存副本，线程对变量的所有操作（读取、赋值等）都必须在工作内存中进行，而不能直接读写主内存中的数据。不同的线程之间也无法直接访问对方工作内存中的变量，线程间变量值的传递均需要通过主内存来完成，线程、主内存、工作内存三者的交互关系如图所示。</p>
-<p><img src="/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5Csynchronized%E5%92%8Cvolatile.png" alt="1592527521175"></p>
+<img src="/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile.png" class width="1592527521175">
+
+
+
 <p>这是因为处理器上的寄存器的读写的速度比内存快几个数量级，为了解决这种速度矛盾，在它们之间加入了高速缓存。线程的工作线程一般就是用高速缓存或者寄存器来实现的。</p>
 <p>加入高速缓存带来了一个新的问题：<strong>缓存一致性</strong>。如果多个缓存共享同一块主内存区域，那么多个缓存的数据可能会不一致，需要一些协议来解决这个问题。</p>
-<h2 id="内存之间的交互操作"><a href="#内存之间的交互操作" class="headerlink" title="内存之间的交互操作"></a>内存之间的交互操作</h2><p><img src="/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592529422405.png" alt="1592529422405"></p>
+<h2 id="内存之间的交互操作"><a href="#内存之间的交互操作" class="headerlink" title="内存之间的交互操作"></a>内存之间的交互操作</h2><img src="/2020/06/19/synchronized%E5%92%8Cvolatile/1592529422405.png" class width="1592529422405">
+
 <ul>
 <li>read：把一个变量的值从主内存传输到工作内存中</li>
 <li>load：在 read 之后执行，把 read 得到的值放入工作内存的变量副本中</li>
@@ -457,11 +461,14 @@
 <h3 id="1-程序次序规则"><a href="#1-程序次序规则" class="headerlink" title="1.  程序次序规则"></a>1.  程序次序规则</h3><p>程序次序规则（Program Order Rule）：在一个线程内，按照<strong>控制流顺序</strong>，书写在前面的操作先行发生于书写在后面的操作。注意，这里说的是控制流顺序而不是程序代码顺序，因为要考虑分支、循环等结构。</p>
 <h3 id="2-管程锁定规则"><a href="#2-管程锁定规则" class="headerlink" title="2.管程锁定规则"></a>2.管程锁定规则</h3><p>管程锁定规则（Monitor Lock Rule）：一个<code>unlock</code>操作先行发生于后面对同一个锁的<code>lock</code>操作。这里必须强调的是“<strong>同一个锁</strong>”，而“<strong>后面</strong>”是指时间上的先后。</p>
 <p>也就是说先获得的锁需要先解锁才能被后面的线程获得锁。</p>
-<p><img src="/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592534021635.png" alt="1592534021635"></p>
+<img src="/2020/06/19/synchronized%E5%92%8Cvolatile/1592534021635.png" class width="1592534021635">
+
 <h3 id="3-volatile变量规则"><a href="#3-volatile变量规则" class="headerlink" title="3.volatile变量规则"></a>3.volatile变量规则</h3><p><code>volatile</code>变量规则（Volatile Variable Rule）：对一个<code>volatile</code>变量的写操作先行发生于后面对这个变量的读操作，这里的“后面”同样是指时间上的先后。<strong>先写进去主内存，然后才能从主内存中读取到工作内存中。</strong></p>
-<p><img src="/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592534100497.png" alt="1592534100497"></p>
+<img src="/2020/06/19/synchronized%E5%92%8Cvolatile/1592534100497.png" class width="1592534100497">
+
 <h3 id="4-线程启动规则"><a href="#4-线程启动规则" class="headerlink" title="4. 线程启动规则"></a>4. 线程启动规则</h3><p>线程启动规则（Thread Start Rule）：Thread对象的<code>start()</code>方法先行发生于此线程的每一个动作。</p>
-<p><img src="/2020/06/19/synchronized%E5%92%8Cvolatile/synchronized%E5%92%8Cvolatile%5C1592534150646.png" alt="1592534150646"></p>
+<img src="/2020/06/19/synchronized%E5%92%8Cvolatile/1592534150646.png" class width="1592534150646">
+
 <h3 id="5-线程终止规则"><a href="#5-线程终止规则" class="headerlink" title="5.线程终止规则"></a>5.线程终止规则</h3><p>线程终止规则（Thread Termination Rule）：线程中的所有操作都先行发生于对此线程的终止检测，我们可以通过<code>Thread::join()</code>方法是否结束、<code>Thread::isAlive()</code>的返回值等手段检测线程是否已经终止执行。</p>
 <h3 id="6-线程中断规则"><a href="#6-线程中断规则" class="headerlink" title="6.线程中断规则"></a>6.线程中断规则</h3><p>线程中断规则（Thread Interruption Rule）：对线程<code>interrupt()</code>方法的调用先行发生于被中断线程的代码检测到中断事件的发生，可以通过<code>Thread::interrupted()</code>方法检测到是否有中断发生。</p>
 <p>也就是说，interrupt() 方法只是标记线程的中断，也就是线程设置一个中断标记，然后他可以通过interrupted() 方法来检测是否有中断发生。所以应该是先标记中断在检测中断。</p>
