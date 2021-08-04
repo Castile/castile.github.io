@@ -4,6 +4,58 @@
   
     
     <entry>
+      <title>Centos7防火墙问题:Unit iptables.service could not be found.</title>
+      <link href="/2021/08/05/centos%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/"/>
+      <url>/2021/08/05/centos%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Centos7防火墙问题-Unit-iptables-service-could-not-be-found"><a href="#Centos7防火墙问题-Unit-iptables-service-could-not-be-found" class="headerlink" title="Centos7防火墙问题:Unit iptables.service could not be found."></a>Centos7防火墙问题:Unit iptables.service could not be found.</h1><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在搭建zookeeper集群的时候出错，查看防火墙状态发现：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@castile zookeeper-3.5.7]# service iptables status</span><br><span class="line">Redirecting to /bin/systemctl status iptables.service</span><br><span class="line">Unit iptables.service could not be found.</span><br><span class="line"></span><br></pre></td></tr></table></figure><img src="/2021/08/05/centos%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/1628093509711.png" class width="1628093509711"><h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><ol><li><p>安装iptables-services</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install iptables-services</span><br></pre></td></tr></table></figure><img src="/2021/08/05/centos%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/1628093561277.png" class width="1628093561277"><img src="/2021/08/05/centos%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/1628093584574.png" class width="1628093584574"></li><li><p> 启动iptables 并查看状态</p></li></ol>   <img src="/2021/08/05/centos%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/1628093708413.png" class width="1628093708413"><p>其他：</p><p>service iptables stop ： 关闭防火墙</p><p>chkconfig iptables off</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Problems </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> centos </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ZooKeeper的安装及其配置参数</title>
+      <link href="/2021/08/01/ZooKeeper1/"/>
+      <url>/2021/08/01/ZooKeeper1/</url>
+      
+        <content type="html"><![CDATA[<h1 id="ZooKeeper的安装及其配置参数"><a href="#ZooKeeper的安装及其配置参数" class="headerlink" title="ZooKeeper的安装及其配置参数"></a>ZooKeeper的安装及其配置参数</h1><p>ZooKeeper下载:<a href="https://zookeeper.apache.org/releases.html">https://zookeeper.apache.org/releases.html</a></p><p>Zookeeper 是一个开源的分布式的，为分布式框架提供协调服务的 Apache 项目。 </p><img src="/2021/08/01/ZooKeeper1/1.png" class width="1627817015110"><h1 id="ZooKeeper安装"><a href="#ZooKeeper安装" class="headerlink" title="ZooKeeper安装"></a>ZooKeeper安装</h1><ol><li><p>首先将下载的tar包上传到服务器中</p><p>apache-zookeeper-3.5.7-bin.tar.gz</p></li><li><p>在/opt/下面解压出来, 并改名</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf apache-zookeeper-3.5.7-bin.tar.gz</span><br><span class="line">mv apache-zookeeper-3.5.7-bin zookeeper-3.5.7</span><br></pre></td></tr></table></figure></li><li></li><li><p>修改配置文件： 将/opt/zookeeper-3.5.7/conf 这个路径下的 zoo_sample.cfg 修改为 zoo.cfg； </p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure></li><li><p> 打开 zoo.cfg 文件，修改 dataDir 路径： 因为dataDir是存放节点数据，默认 放在/tmp目录下，但是tmp是临时目录，linux会定期删除，所以我们 需要另外指定目录。</p></li></ol>   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> The number of milliseconds of each tick</span></span><br><span class="line">tickTime=2000</span><br><span class="line"><span class="meta">#</span><span class="bash"> The number of ticks that the initial</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> synchronization phase can take</span></span><br><span class="line">initLimit=10</span><br><span class="line"><span class="meta">#</span><span class="bash"> The number of ticks that can pass between</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> sending a request and getting an acknowledgement</span></span><br><span class="line">syncLimit=5</span><br><span class="line"><span class="meta">#</span><span class="bash"> the directory <span class="built_in">where</span> the snapshot is stored.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">do</span> not use /tmp <span class="keyword">for</span> storage, /tmp here is just</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> example sakes.</span></span><br><span class="line">dataDir=/opt/zookeeper-3.5.7/zkData</span><br><span class="line"><span class="meta">#</span><span class="bash"> the port at <span class="built_in">which</span> the clients will connect</span></span><br><span class="line">clientPort=2181</span><br><span class="line"><span class="meta">#</span><span class="bash"> the maximum number of client connections.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> increase this <span class="keyword">if</span> you need to handle more clients</span></span><br><span class="line"><span class="meta">#</span><span class="bash">maxClientCnxns=60</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"><span class="comment"># Be sure to read the maintenance section of the</span></span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> administrator guide before turning on autopurge.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"><span class="comment"># http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="bash"><span class="comment"># The number of snapshots to retain in dataDir</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">autopurge.snapRetainCount=3</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Purge task interval <span class="keyword">in</span> hours</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Set to <span class="string">&quot;0&quot;</span> to <span class="built_in">disable</span> auto purge feature</span></span><br><span class="line"><span class="meta">#</span><span class="bash">autopurge.purgeInterval=1</span></span><br></pre></td></tr></table></figure><ol start="5"><li><p>启动zookeeper, 使用jps命令查看zookeeper进程QuorumPeerMain</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">./bin/zkServer.sh start</span><br><span class="line">[root@castile zookeeper-3.5.7]# ./bin/zkServer.sh start</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[root@castile zookeeper-3.5.7]# jps</span><br><span class="line">50058 QuorumPeerMain</span><br><span class="line">50077 Jps</span><br></pre></td></tr></table></figure></li><li><p>客户端连接</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/zkCli.sh</span><br></pre></td></tr></table></figure><img src="/2021/08/01/ZooKeeper1/1627820023872.png" class width="1627820023872"></li><li><p>停止ZooKeeper</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/zkServer.sh stop</span><br></pre></td></tr></table></figure></li></ol><h1 id="配置参数解读"><a href="#配置参数解读" class="headerlink" title="配置参数解读"></a>配置参数解读</h1><p> Zookeeper中的配置文件zoo.cfg中参数含义解读如下 ：</p><ol><li><p> tickTime = 2000：通信心跳时间，Zookeeper服务器与客户端心跳时间，单位毫秒。 </p></li><li><p> initLimit = 10：LF初始通信时限。 Leader和Follower<strong>初始连接</strong>时能容忍的最多心跳数。也就是初始化集群时集群节点同步超时时间为20s。</p></li><li><p> syncLimit = 5：LF同步通信时限。 Leader和Follower之间通信时间如果超过syncLimit * tickTime，Leader认为Follwer死 掉，从服务器列表中删除Follwer。 即集群在运行过程中同步数据超时时间为10s。</p></li><li><p> dataDir：保存Zookeeper中的数据。 注意：默认的tmp目录，容易被Linux系统定期删除，所以一般不用默认的tmp目录。</p></li><li><p> clientPort = 2181：客户端连接端口，服务监听的端口号。通常不做修改。  </p></li><li><p>maxClientCnxns=60: 线程池数量为60个。</p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> ZooKeeper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ZooKeeper </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>阿里巴巴开源的Java性能诊断工具Arthas详解</title>
       <link href="/2021/07/25/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E5%BC%80%E6%BA%90%E7%9A%84Java%E6%80%A7%E8%83%BD%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7Arthas%E8%AF%A6%E8%A7%A3/"/>
       <url>/2021/07/25/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E5%BC%80%E6%BA%90%E7%9A%84Java%E6%80%A7%E8%83%BD%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7Arthas%E8%AF%A6%E8%A7%A3/</url>
