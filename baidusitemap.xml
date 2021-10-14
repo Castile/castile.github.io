@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://castile.github.io/2021/10/14/cleancode2/</loc>
+    <lastmod>2021-10-14</lastmod>
+  </url>
+  <url>
+    <loc>https://castile.github.io/2021/09/25/Netty02-%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2021-09-27</lastmod>
+  </url>
+  <url>
     <loc>https://castile.github.io/2021/08/22/Netty01-nio/</loc>
     <lastmod>2021-08-22</lastmod>
   </url>
