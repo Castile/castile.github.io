@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>SSL/TLS协议</title>
+      <link href="/2022/09/25/https/"/>
+      <url>/2022/09/25/https/</url>
+      
+        <content type="html"><![CDATA[<h2 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h2><p>图片来源于： <a href="https://www.bilibili.com/video/BV1KY411x7Jp/?spm_id_from=333.788&amp;vd_source=4542f58f83b32442d5604ba46f2aa229">https://www.bilibili.com/video/BV1KY411x7Jp/?spm_id_from=333.788&amp;vd_source=4542f58f83b32442d5604ba46f2aa229</a></p><p>图解：</p><img src="/2022/09/25/https/1664081948786.png" class width="1664081948786"><p>交换后：同样会被中间人知道交换了什么颜色</p><img src="/2022/09/25/https/1664082027997.png" class width="1664082027997"><p>蓝色的私钥+对方的（私+公）= 咖啡色</p><p>红色的私钥+ 蓝色的（私+公） = 咖啡色</p><img src="/2022/09/25/https/client.png" class width="1664113823517"><p>这个“咖啡色”就是他们之间的密钥了，重点是，这个“咖啡色”只能由他们自己私有的颜色才可以调制而成，其他人是无法得知的，包括这个中间人。</p><p>这便是非对称加密的核心所在，使用两个密钥来进行加密和解密。</p><p>公开密钥是所有人都拥有的，而私有密钥只有持有方才有的秘钥。</p><p>一般来说，私钥是放在服务器中，数据经过公钥加密就只能使用私钥解密，数据使用私钥加密就只能使用公钥解密。</p><img src="/2022/09/25/https/1664114094235.png" class width="1664114094235"><p>服务端具有成对的秘钥，把自己的公钥公开出去，客户端使用公钥加密，就只能使用服务端的私有进行解密。</p><h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><img src="/2022/09/25/https/1664114193249.png" class width="1664114193249"><p>证书里面包含的内容：域名、所属公司、时间日期、特定的公钥和私钥等</p><p>服务器安装了SSL证书后，客户端才可以使用https来访问服务器了，并将默认的80端口改为443端口。</p><h2 id="TLS握手过程"><a href="#TLS握手过程" class="headerlink" title="TLS握手过程"></a>TLS握手过程</h2><ol><li><p>客户端访问服务端</p><img src="/2022/09/25/https/TLS.png" class width="1664114368348"></li></ol><ol start="2"><li><p>服务端响应客户端</p><img src="/2022/09/25/https/1664114429035.png" class width="1664114368348"></li></ol><ol start="3"><li><p>服务器接着向客户端发送自己的证书，客户端可以根据自己的证书新人列表来确认这个服务器是否是可信的。</p><img src="/2022/09/25/https/1664114518013.png" class width="1664114518013"></li><li><p>服务器把自己的公钥发送给了客户端，这里不会傻傻地把自己的私钥发送出去</p><p>如果是双向SSL通信的话，</p><img src="/2022/09/25/https/1664114561487.png" class width="1664114561487"></li></ol><ol start="5"><li><p>告诉客户端自己发送完毕，Server Hello Done</p><img src="/2022/09/25/https/ChangeCipherSpec.png" class width="1664114677987"><p>以上步骤的通讯还没有加密，接下来客户端将进行响应了。</p><ol start="6"><li>Client Key Exchange，客户端生成第三个随机数，称之为“预主密钥”。</li></ol><img src="/2022/09/25/https/1664114786783.png" class width="1664114786783"><p>第三个随机数会使用刚刚收到的<strong>公钥进行加密</strong>，并发送给服务器。</p><p>告诉服务器往后的数据就用商议好的算法和密钥来加密了</p><p><img src="/2022/09/25/https/Users/ZHLAS/AppData/Roaming/Typora/typora-user-images/1664115068643.png" alt="1664115068643"></p><p>8 服务器这边的TLS握手已经成功</p><img src="/2022/09/25/https/1664114429035.png" class width="1664114368348"><p>握手总结：</p><img src="/2022/09/25/https/TLS.png" class width="1664114368348"><p>前面握手的部分使用的是非对称加密，后面得到会话密钥后就使用对称加密来通信了。</p><h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><ol><li><a href="https://www.bilibili.com/video/BV1KY411x7Jp/?spm_id_from=333.788&amp;vd_source=4542f58f83b32442d5604ba46f2aa229">https://www.bilibili.com/video/BV1KY411x7Jp/?spm_id_from=333.788&amp;vd_source=4542f58f83b32442d5604ba46f2aa229</a></li></ol></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ssl </tag>
+            
+            <tag> 网络 </tag>
+            
+            <tag> https </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>重构技巧（一）</title>
       <link href="/2021/10/14/cleancode2/"/>
       <url>/2021/10/14/cleancode2/</url>
@@ -75,29 +104,6 @@
             <tag> NIO </tag>
             
             <tag> Netty </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>SSL/TLS协议</title>
-      <link href="/2021/08/22/https/"/>
-      <url>/2021/08/22/https/</url>
-      
-        <content type="html"><![CDATA[<h2 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h2><p>图解：</p><img src="/2021/08/22/https/1664081948786.png" class width="1664081948786"><p>交换后：同样会被中间人知道交换了什么颜色</p><img src="/2021/08/22/https/1664082027997.png" class width="1664082027997"><p>蓝色的私钥+对方的（私+公）= 咖啡色</p><p>红色的私钥+ 蓝色的（私+公） = 咖啡色</p><img src="/2021/08/22/https/client.png" class width="1664113823517"><p>这个“咖啡色”就是他们之间的密钥了，重点是，这个“咖啡色”只能由他们自己私有的颜色才可以调制而成，其他人是无法得知的，包括这个中间人。</p><p>这便是非对称加密的核心所在，使用两个密钥来进行加密和解密。</p><p>公开密钥是所有人都拥有的，而私有密钥只有持有方才有的秘钥。</p><p>一般来说，私钥是放在服务器中，数据经过公钥加密就只能使用私钥解密，数据使用私钥加密就只能使用公钥解密。</p><img src="/2021/08/22/https/1664114094235.png" class width="1664114094235"><p>服务端具有成对的秘钥，把自己的公钥公开出去，客户端使用公钥加密，就只能使用服务端的私有进行解密。</p><h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><img src="/2021/08/22/https/1664114193249.png" class width="1664114193249"><p>证书里面包含的内容：域名、所属公司、时间日期、特定的公钥和私钥等</p><p>服务器安装了SSL证书后，客户端才可以使用https来访问服务器了，并将默认的80端口改为443端口。</p><h2 id="TLS握手过程"><a href="#TLS握手过程" class="headerlink" title="TLS握手过程"></a>TLS握手过程</h2><ol><li><p>客户端访问服务端</p><img src="/2021/08/22/https/TLS.png" class width="1664114368348"></li></ol><ol start="2"><li><p>服务端响应客户端</p><img src="/2021/08/22/https/1664114429035.png" class width="1664114368348"></li></ol><ol start="3"><li><p>服务器接着向客户端发送自己的证书，客户端可以根据自己的证书新人列表来确认这个服务器是否是可信的。</p><img src="/2021/08/22/https/1664114518013.png" class width="1664114518013"></li><li><p>服务器把自己的公钥发送给了客户端，这里不会傻傻地把自己的私钥发送出去</p><p>如果是双向SSL通信的话，</p><img src="/2021/08/22/https/1664114561487.png" class width="1664114561487"></li></ol><ol start="5"><li><p>告诉客户端自己发送完毕，Server Hello Done</p><img src="/2021/08/22/https/ChangeCipherSpec.png" class width="1664114677987"><p>以上步骤的通讯还没有加密，接下来客户端将进行响应了。</p><ol start="6"><li>Client Key Exchange，客户端生成第三个随机数，称之为“预主密钥”。</li></ol><img src="/2021/08/22/https/1664114786783.png" class width="1664114786783"><p>第三个随机数会使用刚刚收到的<strong>公钥进行加密</strong>，并发送给服务器。</p><p>告诉服务器往后的数据就用商议好的算法和密钥来加密了</p><p><img src="/2021/08/22/https/Users/ZHLAS/AppData/Roaming/Typora/typora-user-images/1664115068643.png" alt="1664115068643"></p><p>8 服务器这边的TLS握手已经成功</p><img src="/2021/08/22/https/1664114429035.png" class width="1664114368348"><p>握手总结：</p><img src="/2021/08/22/https/TLS.png" class width="1664114368348"><p>前面握手的部分使用的是非对称加密，后面得到会话密钥后就使用对称加密来通信了。</p></li></ol>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> ssl </tag>
-            
-            <tag> 网络 </tag>
-            
-            <tag> https </tag>
             
         </tags>
       
