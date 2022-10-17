@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>简单工厂模式</title>
+      <link href="/2022/10/17/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/"/>
+      <url>/2022/10/17/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
+      
+        <content type="html"><![CDATA[<h1 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h1><p> 简单工厂（Simple factory）理解：</p><blockquote><p>According to definition from wikipedia, Factory Pattern is “A factory is an object for creating other objects”. Simple Factory Pattern is a Factory class in its simplest form (In comparison to Factory Method Pattern or Abstract Factory Pattern). In another way, we can say: In simple factory pattern, <strong>we have a factory class which has a method that returns different types of object based on given input.</strong> </p></blockquote><p>有一个工厂类，根据不同的输入返回不同的对象。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleFactory</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG = LoggerFactory.getLogger(SimpleFactory.class);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IExcelExport <span class="title">createExcelExport</span><span class="params">(FileType fileType)</span></span>&#123;</span><br><span class="line">        LOG.info(<span class="string">&quot;简单工厂&quot;</span>);</span><br><span class="line">        IExcelExport excelExport=<span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">switch</span> (fileType)&#123;</span><br><span class="line">            <span class="keyword">case</span> EXCEL_2003:</span><br><span class="line">                excelExport=<span class="keyword">new</span> Excel2003Export();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> EXCEL_2007:</span><br><span class="line">                excelExport=<span class="keyword">new</span> Excel2007Export();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> excelExport;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>三个关键词：方法、入参、返回值</p><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>负责创建对象的方法，可以叫做工厂方法</p><ol><li>在加简单工厂模式中，为了简单，往往将这个方法定义成static，方便使用</li><li>一个工厂类中可以包含多个这样的方法，建议一个模块使用一个工厂类即可。</li></ol><h2 id="入参"><a href="#入参" class="headerlink" title="入参"></a>入参</h2><p>根据这个入参决定创建哪种类型的对象</p><ol><li>入参的一般是常量或者枚举，便于方法里面的seich语句或者其他分支的语句进行判断</li><li>也有人喜欢直接传递一个Class类（需要实例化的对象），但是不推荐，因为违反了工厂模式的宗旨。</li></ol><h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>工厂方法创建的是一类对象，所以返回值类型常常是一个接口，也可以是抽象的父类，而不会是一个具体的类。</p><h1 id="痛点"><a href="#痛点" class="headerlink" title="痛点"></a>痛点</h1><p>不符合开闭原则，同样的，如果需要增加一个，需要修改工厂类的代码</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 设计模式 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 设计模式 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SSL/TLS协议</title>
       <link href="/2022/09/25/https/"/>
       <url>/2022/09/25/https/</url>
