@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://castile.github.io/2022/11/20/docker%E6%96%87%E6%A1%A3/</loc>
+    <lastmod>2022-11-20</lastmod>
+  </url>
+  <url>
+    <loc>https://castile.github.io/2022/11/20/VM%E8%99%9A%E6%8B%9F%E6%9C%BAping%E9%80%9A%E5%A4%96%E7%BD%91check/</loc>
+    <lastmod>2022-11-20</lastmod>
+  </url>
+  <url>
+    <loc>https://castile.github.io/2022/11/20/blog%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4/</loc>
+    <lastmod>2022-11-20</lastmod>
+  </url>
+  <url>
+    <loc>https://castile.github.io/2021/09/25/Netty02-%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2022-11-06</lastmod>
+  </url>
+  <url>
+    <loc>https://castile.github.io/2021/08/22/Netty01-nio/</loc>
+    <lastmod>2022-11-05</lastmod>
+  </url>
+  <url>
     <loc>https://castile.github.io/2022/10/19/%E5%BB%BA%E9%80%A0%E8%80%85%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
     <lastmod>2022-10-19</lastmod>
   </url>
@@ -23,14 +43,6 @@
   <url>
     <loc>https://castile.github.io/2021/10/14/cleancode2/</loc>
     <lastmod>2021-10-14</lastmod>
-  </url>
-  <url>
-    <loc>https://castile.github.io/2021/09/25/Netty02-%E5%85%A5%E9%97%A8/</loc>
-    <lastmod>2021-09-27</lastmod>
-  </url>
-  <url>
-    <loc>https://castile.github.io/2021/08/22/Netty01-nio/</loc>
-    <lastmod>2021-08-22</lastmod>
   </url>
   <url>
     <loc>https://castile.github.io/2021/08/08/ZooKeeper%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</loc>
