@@ -1599,6 +1599,13 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://castile.github.io/tags/spring-batch/</loc>
+    <lastmod>2023-02-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
