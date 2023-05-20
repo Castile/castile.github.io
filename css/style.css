@@ -149,7 +149,7 @@ kbd,
 pre,
 samp {
   font-family: monospace,monospace;
-  font-size: 1em;
+  font-size: 3em;
 }
 
 button,
@@ -260,7 +260,7 @@ th {
 }
 
 html {
-  font-size: 10px;
+  font-size: 14px;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -6491,7 +6491,7 @@ body.no-sidebar .sidebar {
 .marked-body h2 {
   padding-bottom: 0.3em;
   font-size: 1.5em;
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 2px solid #d6d5d5;
 }
 
 .marked-body a {
