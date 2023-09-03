@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://castile.github.io/2023/09/03/castile-rpc%E6%A1%86%E6%9E%B6/</loc>
+    
+    <lastmod>2023-09-03</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://castile.github.io/2023/09/03/%E7%AE%97%E5%AD%90%E9%93%BE/</loc>
     
     <lastmod>2023-09-03</lastmod>
@@ -1753,6 +1760,13 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://castile.github.io/tags/rpc/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
@@ -1932,6 +1946,13 @@
   
   <url>
     <loc>https://castile.github.io/categories/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://castile.github.io/categories/RPC/</loc>
     <lastmod>2023-09-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
