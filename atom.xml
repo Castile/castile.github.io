@@ -6,7 +6,7 @@
   <link href="https://castile.github.io/atom.xml" rel="self"/>
   
   <link href="https://castile.github.io/"/>
-  <updated>2024-11-07T14:04:28.097Z</updated>
+  <updated>2024-11-07T14:39:23.625Z</updated>
   <id>https://castile.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://castile.github.io/2024/11/07/nebula%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     <id>https://castile.github.io/2024/11/07/nebula%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93/</id>
     <published>2024-11-07T14:04:28.000Z</published>
-    <updated>2024-11-07T14:04:28.097Z</updated>
+    <updated>2024-11-07T14:39:23.625Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="图数据库概述"><a href="#图数据库概述" class="headerlink" title="图数据库概述"></a>图数据库概述</h1><p>图数据库是专门存储庞大的图形网络并从中检索信息的数据库。它可以将图中的数据高效存储为点（Vertex）和边（Edge），还可以将属性（Property）附加到点和边上。</p><img src="/Users/castile/Documents/hexo-blog/blog-backup/source/_drafts/nebula图数据库/图数据库概述.png" alt="image-20241107220209927" style="zoom:50%;">]]></content>
+    <content type="html"><![CDATA[<h1 id="图数据库概述"><a href="#图数据库概述" class="headerlink" title="图数据库概述"></a>图数据库概述</h1><p>图数据库是专门存储庞大的图形网络并从中检索信息的数据库。它可以将图中的数据高效存储为点（Vertex）和边（Edge），还可以将属性（Property）附加到点和边上。</p><img src="/2024/11/07/nebula%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93/图数据库概述.png" alt="image-20241107220209927" style="zoom:50%;">]]></content>
     
     
       
